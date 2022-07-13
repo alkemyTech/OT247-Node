@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.belongsTo(models.Role, { foreignKey: 'roleId' })
-      User.hasMany(models.Comment, { foreignKey: 'user_id' })
+      // define association here
     }
   };
   User.init({
@@ -40,9 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'User',
     paranoid: true,
-    timestamps: true
+    timestamps: true,
+    modelName: 'User'
   });
   return User;
 };
