@@ -1,3 +1,3 @@
-const Activities = request('../models/activities.js');
+const { Activities } = require('../models');
 
 module.exports = Activities;
