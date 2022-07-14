@@ -3,10 +3,10 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class organization extends Model {
+  class Organization extends Model {
     static associate(models) {}
   };
-  organization.init({
+  Organization.init({
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
