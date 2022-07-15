@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     description: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Role',
