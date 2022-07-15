@@ -1,3 +1,12 @@
-const Categories = require('../models/categories');
+const {Category} = require('../models');
 
-module.exports = Categories;
+module.exports = {
+    getCategories: async(req, res, next) => {
+        try{
+            const allCategories = await Category.findAll();
+            res.status(200).json(allCategories);
+        }catch(err){
+            next(err)
+        }
+    }
+}
