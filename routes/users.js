@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { deleteUserController } = require('../controllers/users');
+const { deleteUserById } = require('../controllers/users');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -8,6 +8,6 @@ router.get('/', function (req, res, next) {
 });
 
 //DELETE delete user
-router.delete('/:id', deleteUserController);
+router.delete('/:id', deleteUserById);
 
 module.exports = router;
