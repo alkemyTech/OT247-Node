@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     organizationId: DataTypes.INTEGER,
   }, {
     sequelize,
+    timestamp: true,
     modelName: 'Slide',
   });
   return Slide;
