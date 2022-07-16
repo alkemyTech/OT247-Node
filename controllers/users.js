@@ -34,28 +34,3 @@ module.exports = {
         }
       }),
 };
-
-/*     register: async(req, res, next) => {
-        try{
-        const { firstName, lastName, email, password, photo, roleId } = req.body;
-
-        const passwordHash = await bcrypt.hash(password, 10);
-
-        const newUser = await User.create({
-            firstName,
-            lastName,
-            email,
-            password: passwordHash,
-            photo,
-            roleId
-        })
-
-        res.status(201).json({  
-            message: 'User created successfully',
-            data: newUser
-        })
-        }catch(err){
-            console.log(err);
-            next();
-        }
-    }  */
