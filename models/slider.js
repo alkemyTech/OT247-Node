@@ -14,10 +14,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Slider.init({
-    imageUrl: DataTypes.STRING,
-    text: DataTypes.TEXT,
-    order: DataTypes.INTEGER,
-    organizationId: DataTypes.INTEGER
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    text: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    order: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    organizationId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Slider',
