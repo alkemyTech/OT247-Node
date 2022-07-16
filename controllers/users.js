@@ -18,7 +18,6 @@ const deleteUserById = async (req, res) => {
       : res.status(404).send('user not found');
   } catch (err) {
     res.status(400).send('an error has occurred');
-    console.log(err);
   }
 };
 
