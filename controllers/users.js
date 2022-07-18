@@ -10,7 +10,7 @@ const {
 
 
 module.exports = {
-    post: catchAsync(async (req, res, next) => {
+  userRegister: catchAsync(async (req, res, next) => {
         try {
           const { body } = req
     
