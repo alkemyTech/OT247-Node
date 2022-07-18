@@ -1,4 +1,4 @@
-const { sendgridKey, senderEmail } = require(__dirname + '/../config/config').development
+const { sendgridKey, senderEmail } = require(__dirname + '/../config/config')
 const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(sendgridKey)
