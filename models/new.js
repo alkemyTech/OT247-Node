@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      New.belongsTo(models.Category, {as: 'category'});
+    static associate(models) {;
     }
   };
   New.init({
@@ -20,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'New',
+    timestamps: true,
     paranoid: true
   });
 

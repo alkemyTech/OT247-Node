@@ -19,13 +19,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       categoryId: {
-        type: Sequelize.INTEGER/*,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Roles',
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'*/
+        onDelete: 'SET NULL'
       },
       deletedAt: {
         type: Sequelize.DATE
