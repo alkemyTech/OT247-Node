@@ -1,4 +1,29 @@
-const { User } = require('../models');
+const bcrypt = require('bcrypt');
+const { User } = require('../models'); 
+const { validationResult } = require('express-validator');
+
+const authUser = async (req, res) => {
+  const errors = validationResult(req);
+  const {Email} = req.body;
+  
+  if(!errors.isEmpty()){
+    res.send('ok: false');
+  }else{
+    const userFinded = await User.findOne({ where: {email: Email}});
+
+    if(userFinded === null){
+      res.send('email or password doesnt match');
+    }else{
+      const match = await bcrypt.compare(req.body.Password, userFinded.password);
+
+      if(match){
+        res.status(200).send(userFinded);
+      }else{
+        res.send('ok: false');
+      }
+    }
+  }
+}
 
 const deleteUserById = async (req, res) => {
   try {
@@ -21,4 +46,4 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-module.exports = { deleteUserById };
+module.exports = { deleteUserById , authUser};
