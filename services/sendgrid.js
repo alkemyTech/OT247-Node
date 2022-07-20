@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(sendgridKey)
 
-const sendMail = async ({ template, templateId, user, email, subject, sandboxMode = false }) => {
+const sendMail = async ({ template, templateId, email, subject, sandboxMode = false }) => {
 	const msg = {
     to: email,
     from: senderEmail,
