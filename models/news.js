@@ -23,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   });
 
-  return New;s
+  return News;
 };
