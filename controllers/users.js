@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const findUserService = require('../services/user')
 
 const deleteUserById = async (req, res) => {
   try {
