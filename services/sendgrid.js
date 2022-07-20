@@ -4,8 +4,7 @@ const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(sendgridKey)
 
-const sendMail = async ({ templateId, user, email, subject, sandboxMode = false }) => {
-  const welcomeMailData = mailWelcomeTemplate.welcomeMail(user)
+const sendMail = async ({ template, templateId, user, email, subject, sandboxMode = false }) => {
 	const msg = {
     to: email,
     from: senderEmail,
@@ -16,7 +15,7 @@ const sendMail = async ({ templateId, user, email, subject, sandboxMode = false 
       }
     },
     templateId: templateId,
-    dynamic_template_data: welcomeMailData
+    dynamic_template_data: template
   }
   try {
     await sgMail.send(msg)
