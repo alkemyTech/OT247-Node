@@ -1,5 +1,4 @@
 const { sendgridKey, senderEmail } = require(__dirname + '/../config/config')
-const { mailWelcomeTemplate } = require(__dirname + '/../mail-templates/mail-welcome-template');
 const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(sendgridKey)
