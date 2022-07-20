@@ -1,24 +1,36 @@
-const { User } = require('../models');
+const bcrypt = require('bcrypt');
 
-const deleteUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const integerId = Number.isInteger(parseInt(id));
+const createHttpError = require('http-errors')
+const { endpointResponse } = require('../helpers/success')
+const { catchAsync } = require('../helpers/catchAsync')
 
-    //Checks that id param is a integer
-    if (!integerId) {
-      res.status(412).send('id param has to be a integer');
-      return;
-    }
+const {
+  registerUser,
+} = require('../services/user')
 
-    // User to eliminate
-    const deletedUser = await User.destroy({ where: { id } });
-    deletedUser == 1
-      ? res.status(200).send('user deleted')
-      : res.status(404).send('user not found');
-  } catch (err) {
-    res.status(400).send('an error has occurred');
-  }
+
+module.exports = {
+  userRegister: catchAsync(async (req, res, next) => {
+        try {
+          const { body } = req
+    
+          const encryptedPassword = bcrypt.hashSync(body.password, 10)
+          body.password = encryptedPassword
+          body.roleId = 1
+    
+          const users = await registerUser(body)
+          endpointResponse({
+            res,
+            message: 'Users created successfully',
+            body: users,
+          }) 
+        
+        } catch (error) {
+          const httpError = createHttpError(
+            error.statusCode,
+            `[Error creating user] - [users - POST]: ${error.message}`,
+          );
+          next(httpError) 
+        }
+      }),
 };
-
-module.exports = { deleteUserById };

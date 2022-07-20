@@ -3,10 +3,15 @@ var router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
+const authRouter = require('./auth');
 
-router.get('/', function (req, res, next) {
+/* GET home page. */
+router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+//Auth
+router.use('/auth', authRouter)
 
 //Categories
 router.use('/categories', categoriesRouter);
