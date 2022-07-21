@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-const welcomeMail = require('../mail-templates/mail-templates')
+// const welcomeMail = require('../mail-templates/mail-templates')
 
 const {
   registerUser,
   deleteUserService,
+  updateUserService
 } = require('../services/user')
 
 const {
@@ -33,7 +34,7 @@ module.exports = {
           sendMail({
             email: body.email,
             subject: 'Welcome to the app',
-            template: welcomeMail(user),
+            // template: welcomeMail(user),
             templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8'
           })
         } catch (error) {
@@ -64,4 +65,24 @@ module.exports = {
         res.status(400).send('an error has occurred');
       }
     },
+  updateUser: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { userId } = req.user
+
+      if (Number(id) !== userId) 
+        return res.status(403).json({ msg: 'You are not authorized to perform this action' })
+  
+      const { firstName, lastName, photo } = req.body
+
+      if (!firstName && !lastName && !photo)
+        return res.status(400).json({ msg: 'You have not made any changes' })
+  
+      await updateUserService(userId , { firstName, lastName, photo })
+  
+      endpointResponse({ res, message: 'User updated successfully' }) 
+      } catch (err) {
+        res.status(500).json({ msg: err.message })
+    }
+  }
 };
