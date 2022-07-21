@@ -47,5 +47,5 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true,
     timestamps: true,
   });
-  return Organization;
+  return organization;
 };
