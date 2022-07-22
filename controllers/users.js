@@ -34,7 +34,7 @@ module.exports = {
           sendMail({
             email: body.email,
             subject: 'Welcome to the app',
-            // template: welcomeMail(user),
+            //template: welcomeMail(user),
             templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8'
           })
         } catch (error) {
