@@ -12,5 +12,8 @@ module.exports = {
     "port": process.env.DB_PORT,
     "dialect": "mysql",
     "sendgridKey": process.env.SENDGRID_API_KEY,
-    "senderEmail": process.env.SENDGRID_SENDER_EMAIL
+    "senderEmail": process.env.SENDGRID_SENDER_EMAIL,
+    "awsAccessKeyPublic": process.env.AWS_ACCESS_KEY_PUBLIC,
+    "awsSecretAccessKey": process.env.AWS_KEY_SECRET,
+    "s3BucketName": process.env.S3_AWS_BUCKET_NAME,
 }
