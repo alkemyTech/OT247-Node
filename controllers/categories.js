@@ -1,12 +1,14 @@
 const {Category} = require('../models');
 
 module.exports = {
-    getCategories: async(req, res, next) => {
+    getCategoriesNames: async(req, res, next) => {
         try{
-            const allCategories = await Category.findAll();
-            res.status(200).json(allCategories);
+            const categoriesNames = await Category.findAll({
+                attributes: ['name']
+            });
+            return res.status(200).json(categoriesNames);
         }catch(err){
-            next(err)
+            return res.status(400).send(err);
         }
     }
 }
