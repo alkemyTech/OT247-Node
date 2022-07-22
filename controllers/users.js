@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-const welcomeMail = require('../mail-templates/mail-templates')
+//const welcomeMail = require('../mail-templates/mail-templates')
 
 const {
   registerUser,
@@ -33,7 +33,7 @@ module.exports = {
           sendMail({
             email: body.email,
             subject: 'Welcome to the app',
-            template: welcomeMail(user),
+            //template: welcomeMail(user),
             templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8'
           })
         } catch (error) {
