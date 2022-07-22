@@ -22,7 +22,7 @@ const updateUserService = async (id, userData) => {
   try {
     return await User.update(userData , { where: { id } });
   } catch (err) {
-    return { error: err };
+    throw err
   }
 };
 
