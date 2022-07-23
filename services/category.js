@@ -1,9 +1,10 @@
 const { Category } = require('../models');
 const { ErrorObject } = require('../helpers/error')
+const existCategory = require('../helpers/existCategory');
 
 const updateCategoryById = async(id, body) =>{
     try{
-        const category = await Category.findByPk(id);
+        const category = await existCategory(id)
         const { name, description, image } = body;
 
         if(!category){
@@ -22,7 +23,7 @@ const updateCategoryById = async(id, body) =>{
         return updatedCategory;
 
     }catch(err){
-        throw new ErrorObject(500, 'Error updating category')
+        throw new ErrorObject(500, err.message)
     }
 };
 

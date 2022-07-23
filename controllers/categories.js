@@ -22,7 +22,7 @@ module.exports = {
         const { body } = req;
         
     
-          const category = await updateCategoryById(id, body)
+          const category = await updateCategoryById(integerId, body)
           endpointResponse({
             res,
             message: 'Category updated successfully',
