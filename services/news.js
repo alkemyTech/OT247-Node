@@ -1,6 +1,6 @@
 const { News } = require('../models');
 
-const getNewsById = async (id) => {
+const getNewsByIdService = async (id) => {
   try {
       return await News.findByPk(id);
   } catch (err) {
@@ -9,5 +9,5 @@ const getNewsById = async (id) => {
 }
 
 module.exports = {
-  getNewsById,
+  getNewsByIdService,
 }
