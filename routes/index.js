@@ -5,6 +5,7 @@ const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
 const authRouter = require('./auth');
 const userRouter = require('./users');
+const activitiesRouter = require('./activities');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -22,5 +23,8 @@ router.use('/organizations', organizationsRouter);
 
 //Users
 router.use('/users', userRouter);
+
+//Activities
+router.use('/activities', activitiesRouter);
 
 module.exports = router;
