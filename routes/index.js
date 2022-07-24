@@ -3,6 +3,7 @@ var router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
+const activitiesRouter = require('./activities');
 const authRouter = require('./auth');
 
 /* GET home page. */
@@ -18,5 +19,8 @@ router.use('/categories', categoriesRouter);
 
 //Organizations
 router.use('/organizations', organizationsRouter);
+
+//Activities
+router.use('/activities', activitiesRouter);
 
 module.exports = router;
