@@ -5,14 +5,15 @@ const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
 const authRouter = require('./auth');
 const userRouter = require('./users');
+const newsRouter = require('./news');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 //Auth
-router.use('/auth', authRouter)
+router.use('/auth', authRouter);
 
 //Categories
 router.use('/categories', categoriesRouter);
@@ -22,5 +23,8 @@ router.use('/organizations', organizationsRouter);
 
 //Users
 router.use('/users', userRouter);
+
+//News
+router.use('/news', newsRouter);
 
 module.exports = router;
