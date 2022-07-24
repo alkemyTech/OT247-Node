@@ -27,6 +27,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
       },
+      type: {
+        type: Sequelize.STRING
+      },
       deletedAt: {
         type: Sequelize.DATE
       },
