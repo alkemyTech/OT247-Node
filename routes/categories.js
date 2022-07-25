@@ -5,12 +5,11 @@ const { verify } = require('../middlewares/verifyToken')
 const categoryCtrl = require('../controllers/categories');
 const { schemaValidator } = require('../middlewares/validator')
 const { category } = require('../schemas/category')
-
 const { categoryExists } = require('../middlewares/categoryExists')
 
 router
   .get('/', categoryCtrl.getCategories)
-  .post('/', isAdmin, schemaValidator(category), categoryCtrl.createCategory)
+  .post('/', verify, isAdmin, schemaValidator(category), categoryCtrl.createCategory)
   .delete('/:id', isAdmin, categoryExists, categoryCtrl.deleteCategoryById)
 
 module.exports = router;

@@ -27,5 +27,19 @@ module.exports = {
         }catch(err){
             next(err)
         }
+    },
+    deleteCategoryById: async(req, res, next) => {
+        try{
+            const { id } = req.params
+
+            await categoryService.deleteCategoryById(id)
+
+            endpointResponse({
+                res,
+                message: 'Category deleted successfully'
+            })
+        }catch(err){
+            next(err)
+        }
     }
 }
