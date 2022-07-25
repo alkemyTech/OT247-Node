@@ -1,49 +1,82 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../models'); 
-const { validationResult } = require('express-validator');
 
-const userLogin = async (req, res) => {
-  const errors = validationResult(req);
-  
-  if(!errors.isEmpty()){
-    res.status(400).send('ok: false');
-  }else{
-    const {Email} = req.body;
-    const userFinded = await User.findOne({ where: {email: Email}});
+const createHttpError = require('http-errors')
+const { endpointResponse } = require('../helpers/success')
+const { catchAsync } = require('../helpers/catchAsync')
+//const welcomeMail = require('../mail-templates/mail-templates')
 
-    if(userFinded === null){
-      res.status(400).send('email or password doesnt match');
-    }else{
-      const match = await bcrypt.compare(req.body.Password, userFinded.password);
+const {
+  registerUser,
+  deleteUserService,
+  userLoginService
+} = require('../services/user')
 
-      if(match){
-        res.status(200).send(userFinded);
-      }else{
-        res.status(400).send('ok: false');
+module.exports = {
+  userRegister: catchAsync(async (req, res, next) => {
+        try {
+          const { body } = req
+    
+          const encryptedPassword = bcrypt.hashSync(body.password, 10)
+          body.password = encryptedPassword
+          body.roleId = 1
+    
+          const users = await registerUser(body)
+          endpointResponse({
+            res,
+            message: 'Users created successfully',
+            body: users,
+          }) 
+        
+          sendMail({
+            email: body.email,
+            subject: 'Welcome to the app',
+            //template: welcomeMail(user),
+            templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8'
+          })
+        } catch (error) {
+          const httpError = createHttpError(
+            error.statusCode,
+            `[Error creating user] - [users - POST]: ${error.message}`,
+          );
+          next(httpError) 
+        }
+      }),
+  deleteUserById: async (req, res) => {
+      try {
+        const { id } = req.params;
+        const integerId = Number.isInteger(parseInt(id));
+
+        //Checks that id param is a integer
+        if (!integerId) {
+          res.status(412).send('id param has to be a integer');
+          return;
+        }
+
+        // User to eliminate
+        const deletedUser = await deleteUserService(id);
+        deletedUser == 1
+          ? res.status(200).send('user deleted')
+          : res.status(404).send('user not found');
+      } catch (err) {
+        res.status(400).send('an error has occurred');
       }
+    },
+  userLogin: catchAsync ( async(req, res, next) => {
+    try{
+      const {email, password} = req.body;
+      const result = await userLoginService(email, password);
+      endpointResponse({
+        res,
+        message: 'User login success',
+        body: result
+      });
+
+    }catch(error){
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error user login] - [users - POST]: ${error.message}`,
+      );
+      next(httpError);
     }
-  }
-}
-
-const deleteUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const integerId = Number.isInteger(parseInt(id));
-
-    //Checks that id param is a integer
-    if (!integerId) {
-      res.status(412).send('id param has to be a integer');
-      return;
-    }
-
-    // User to eliminate
-    const deletedUser = await User.destroy({ where: { id } });
-    deletedUser == 1
-      ? res.status(200).send('user deleted')
-      : res.status(404).send('user not found');
-  } catch (err) {
-    res.status(400).send('an error has occurred');
-  }
+  }),
 };
-
-module.exports = { deleteUserById , userLogin};
