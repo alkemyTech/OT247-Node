@@ -8,7 +8,7 @@ const updateCategoryById = async(id, body) =>{
         const { name, description, image } = body;
 
         if(!category){
-            throw new ErrorObject(404, 'Category not found')
+            throw new ErrorObject('Category not found', 404)
         };
 
         const updatedCategory = await Category.update({
@@ -27,6 +27,19 @@ const updateCategoryById = async(id, body) =>{
     }
 };
 
+
+const createCategory = async (newCategory) => {
+  try {
+    return createdCategory = await Category.create(newCategory)
+  } catch (err) {
+    throw err
+  }
+};
+
 module.exports = {
-    updateCategoryById
+    updateCategoryById,
+    createCategory
 }
+
+
+

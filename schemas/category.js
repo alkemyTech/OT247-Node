@@ -31,5 +31,7 @@ exports.category = {
     isString: {
       errorMessage: 'The image must be a string',
     },
+      options: { checkFalsy: true },
+    }
   }
 }
