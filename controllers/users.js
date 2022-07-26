@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-const welcomeMail = require('../mail-templates/mail-templates')
+//const welcomeMail = require('../mail-templates/mail-templates')
 
 const {
   registerUser,
   deleteUserService,
+  getUsersService,
 } = require('../services/user')
 
 const {
@@ -33,7 +34,7 @@ module.exports = {
           sendMail({
             email: body.email,
             subject: 'Welcome to the app',
-            template: welcomeMail(user),
+            //template: welcomeMail(user),
             templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8'
           })
         } catch (error) {
@@ -63,5 +64,13 @@ module.exports = {
       } catch (err) {
         res.status(400).send('an error has occurred');
       }
-    },
+  },
+  getUsers: async (req, res) => {
+    try {
+      const users = await getUsersService();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(400).send('an error has occurred');
+    };
+  }
 };

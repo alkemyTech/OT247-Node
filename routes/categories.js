@@ -1,13 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-const { isAdmin } = require('../middlewares/isAdmin');
-const { getCategories, getCategoryAsAdmin } = require('../controllers/categories');
+const categoryCtrl = require('../controllers/categories');
+const { schemaValidator } = require('../middlewares/validator')
+const { category } = require('../schemas/category')
+const { isAdmin } = require('../middlewares/isAdmin')
+const { verify } = require('../middlewares/verifyToken')
 
-//GET get all categories
-router.get('/', getCategories);
-
-//GET get info of a category as admin
-router.get('/:id', isAdmin, getCategoryAsAdmin);
+router
+  .get('/', categoryCtrl.getCategories)
+  .post('/', verify, isAdmin, schemaValidator(category), categoryCtrl.createCategory)
+  .get('/:id', isAdmin, categoryCtrl.getCategoryAsAdmin);
 
 module.exports = router;

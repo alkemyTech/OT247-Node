@@ -1,13 +1,33 @@
 const { Category } = require('../models');
-const { getCategoryAsAdmin } = require('../services/category');
+
+const { endpointResponse } = require('../helpers/success')
+
+const categoryService = require('../services/category')
 
 module.exports = {
-  getCategories: async (req, res, next) => {
-    try {
-      const allCategories = await Category.findAll();
-      res.status(200).json(allCategories);
-    } catch (err) {
-      next(err);
+    getCategories: async(req, res, next) => {
+        try{
+            const allCategories = await Category.findAll();
+            res.status(200).json(allCategories);
+        }catch(err){
+            next(err)
+        }
+    },
+    createCategory: async(req, res, next) => {
+        try{
+            const { name, description, image } = req.body
+        
+            const newCategory = { name, description, image }
+            const createdCategory = await categoryService.createCategory(newCategory)
+
+            endpointResponse({
+                res,
+                message: 'Category created successfully',
+                body: createdCategory 
+            })
+        }catch(err){
+            next(err)
+        }
     }
   },
   getCategoryAsAdmin: async (req, res) => {
@@ -15,7 +35,7 @@ module.exports = {
       const { id } = req.params;
 
       //Try to get a category
-      const gottenCategory = await getCategoryAsAdmin(id);
+      const gottenCategory = await categoryService.getCategoryAsAdmin(id);
 
       //Server responses
       !gottenCategory

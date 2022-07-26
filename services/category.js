@@ -1,4 +1,12 @@
-const { Category } = require('../models');
+const { Category } = require('../models')
+
+const createCategory = async (newCategory) => {
+  try {
+    return createdCategory = await Category.create(newCategory)
+  } catch (err) {
+    throw err
+  }
+}
 
 const getCategoryAsAdmin = async (id) => {
   try {
@@ -8,4 +16,4 @@ const getCategoryAsAdmin = async (id) => {
   }
 };
 
-module.exports = { getCategoryAsAdmin };
+module.exports = { createCategory, getCategoryAsAdmin }
