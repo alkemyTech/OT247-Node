@@ -1,5 +1,11 @@
 module.exports = {
   organizationUpdate: {
+    id: {
+      in: 'params',
+      isInt: {
+        errorMessage: 'Param id must be an integer/number',
+      },
+    },
     name: {
       optional: true,
       notEmpty: {
