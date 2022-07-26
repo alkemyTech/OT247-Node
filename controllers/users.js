@@ -8,7 +8,8 @@ const { catchAsync } = require('../helpers/catchAsync')
 const {
   registerUser,
   deleteUserService,
-  updateUserService
+  updateUserService,
+  getUsersService,
 } = require('../services/user')
 
 const {
@@ -76,5 +77,13 @@ module.exports = {
       } catch (err) {
         res.status(500).json({ msg: err.message })
     }
+  },
+  getUsers: async (req, res) => {
+    try {
+      const users = await getUsersService();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(400).send('an error has occurred');
+    };
   }
 };

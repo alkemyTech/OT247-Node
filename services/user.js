@@ -26,8 +26,19 @@ const updateUserService = async (id, userData) => {
   }
 };
 
+const getUsersService = async () => {
+  try {
+    return await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+  } catch (err) {
+    return { error: err };
+  }
+}
+
 module.exports = {
     registerUser,
     deleteUserService,
-    updateUserService
+    updateUserService,
+    getUsersService
 }
