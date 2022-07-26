@@ -10,6 +10,26 @@ const registerUser = async (body) => {
     };
 };
 
+const deleteUserService = async (id) => {
+  try {
+    return await User.destroy({ where: { id } });
+  } catch (err) {
+    return { error: err };
+  }
+};
+
+const getUsersService = async () => {
+  try {
+    return await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+  } catch (err) {
+    return { error: err };
+  }
+}
+
 module.exports = {
-    registerUser
+    registerUser,
+    deleteUserService,
+    getUsersService
 }
