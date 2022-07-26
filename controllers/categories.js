@@ -31,15 +31,14 @@ module.exports = {
     deleteCategoryById: async(req, res, next) => {
         try{
             const { id } = req.params
-
             await categoryService.deleteCategoryById(id)
 
             endpointResponse({
                 res,
                 message: 'Category deleted successfully'
             })
-        }catch(err){
-            next(err)
+        } catch(err){
+            res.status(500).json({ msg: err })
         }
     }
 }
