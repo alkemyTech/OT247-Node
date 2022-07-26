@@ -28,7 +28,7 @@ module.exports = {
         ? res.status(404).json({ status: 404, message: 'Organization not found' })
         : res.status(200).json({ status: 200, message: 'Organization data updated' });
     } catch (err) {
-      res.status(400).json({ status: 400, error: 'An error has occurred', error: err.message });
+      res.status(400).json({ status: 400, message: 'An error has occurred', error: err.message });
     }
   },
 };
