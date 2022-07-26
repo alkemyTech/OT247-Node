@@ -21,6 +21,6 @@ router.use('/categories', categoriesRouter);
 router.use('/organizations', organizationsRouter);
 
 //Users
-router.use('/users', userRouter);
+router.use('/users', usersRouter);
 
 module.exports = router;

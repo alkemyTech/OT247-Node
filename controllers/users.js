@@ -67,18 +67,10 @@ module.exports = {
     },
   updateUser: async (req, res) => {
     try {
-      const { id } = req.params;
-      const { userId } = req.user
+      const { id } = req.params
 
-      if (Number(id) !== userId) 
-        return res.status(403).json({ msg: 'You are not authorized to perform this action' })
-  
       const { firstName, lastName, photo } = req.body
-
-      if (!firstName && !lastName && !photo)
-        return res.status(400).json({ msg: 'You have not made any changes' })
-  
-      await updateUserService(userId , { firstName, lastName, photo })
+      await updateUserService(id , { firstName, lastName, photo })
   
       endpointResponse({ res, message: 'User updated successfully' }) 
       } catch (err) {
