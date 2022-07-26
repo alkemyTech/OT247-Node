@@ -1,4 +1,5 @@
 const { News } = require('../models');
+const ErrorObject = require('../helpers/error');
 
 const createNews = async (body) => {
   try {
@@ -10,7 +11,7 @@ const createNews = async (body) => {
       type: 'news',
     });
   } catch (err) {
-    throw new Error(err);
+    throw new ErrorObject(400, 'An error has occurred');
   }
 };
 

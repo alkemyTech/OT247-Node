@@ -1,4 +1,5 @@
 const { createNews } = require('../services/news');
+const { endpointResponse } = require('../helpers/success');
 
 module.exports = {
   createNews: async (req, res) => {
@@ -6,10 +7,14 @@ module.exports = {
       const { body } = req;
 
       //Try to create a news
-      const createdNews = await createNews(body);
+      const news = await createNews(body);
 
       //Server responses
-      res.status(200).json({ status: 200, message: 'News created', data: createdNews });
+      return endpointResponse({
+        res,
+        message: 'News created',
+        body: news,
+      });
     } catch (err) {
       res.status(400).json({ status: 400, message: 'An error has occurred', error: err.message });
     }
