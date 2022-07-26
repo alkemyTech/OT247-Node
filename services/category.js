@@ -8,4 +8,15 @@ const createCategory = async (newCategory) => {
   }
 }
 
-module.exports = { createCategory }
+const deleteCategoryById = async (id) => {
+  try {
+    return await Category.destroy({ where: { id } })
+  } catch (err) {
+    throw err
+  }
+}
+
+module.exports = { 
+  createCategory, 
+  deleteCategoryById 
+}
