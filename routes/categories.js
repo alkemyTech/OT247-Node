@@ -10,6 +10,7 @@ const { categoryExists } = require('../middlewares/categoryExists')
 router
   .get('/', isAdmin, categoryCtrl.getCategoriesNames)
   .post('/', verify, isAdmin, schemaValidator(category), categoryCtrl.createCategory)
+  .put('/:id', isAdmin, schemaValidator(category), updateCategoryById)
   .delete('/:id', isAdmin, categoryExists, categoryCtrl.deleteCategoryById)
 
 module.exports = router;
