@@ -19,6 +19,14 @@ const deleteUserService = async (id) => {
   }
 };
 
+const updateUserService = async (id, userData) => {
+  try {
+    return await User.update(userData , { where: { id } });
+  } catch (err) {
+    throw err
+  }
+};
+
 const getUsersService = async () => {
   try {
     return await User.findAll({
@@ -52,6 +60,7 @@ const userLoginService = async (email, password) => {
 module.exports = {
     registerUser,
     deleteUserService,
+    updateUserService,
     getUsersService,
     userLoginService
 }
