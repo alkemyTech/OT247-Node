@@ -19,6 +19,23 @@ const deleteUserService = async (id) => {
   }
 };
 
+const updateUserService = async (id, userData) => {
+  try {
+    return await User.update(userData , { where: { id } });
+  } catch (err) {
+    throw err
+  }
+};
+
+const getUsersService = async () => {
+  try {
+    return await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+  } catch (err) {
+    return { error: err };
+  }
+}
 const userLoginService = async (email, password) => {
     try{
         const userFinded = await User.findOne({ where: {email}});
@@ -43,5 +60,7 @@ const userLoginService = async (email, password) => {
 module.exports = {
     registerUser,
     deleteUserService,
+    updateUserService,
+    getUsersService,
     userLoginService
 }
