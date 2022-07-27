@@ -27,7 +27,6 @@ const updateCategoryById = async(id, body) =>{
     }
 };
 
-
 const createCategory = async (newCategory) => {
   try {
     return createdCategory = await Category.create(newCategory)
@@ -36,10 +35,16 @@ const createCategory = async (newCategory) => {
   }
 };
 
-module.exports = {
-    updateCategoryById,
-    createCategory
+const deleteCategoryById = async (id) => {
+  try {
+    return await Category.destroy({ where: { id } })
+  } catch (err) {
+    throw err
+  }
 }
 
-
-
+module.exports = {
+    createCategory,
+    deleteCategoryById,
+    updateCategoryById
+}

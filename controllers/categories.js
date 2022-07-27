@@ -10,12 +10,14 @@ const { endpointResponse } = require('../helpers/success')
 const categoryService = require('../services/category')
 
 module.exports = {
-    getCategories: async(req, res, next) => {
+    getCategoriesNames: async(req, res, next) => {
         try{
-            const allCategories = await Category.findAll();
-            res.status(200).json(allCategories);
+            const categoriesNames = await Category.findAll({
+                attributes: ['name']
+            });
+            return res.status(200).json(categoriesNames);
         }catch(err){
-            next(err)
+            return res.status(400).send(err);
         }
     },
     updateCategoryById: catchAsync(async (req, res, next) => {
@@ -54,6 +56,19 @@ module.exports = {
             })
         }catch(err){
             next(err)
+        }
+    },
+    deleteCategoryById: async(req, res, next) => {
+        try{
+            const { id } = req.params
+            await categoryService.deleteCategoryById(id)
+
+            endpointResponse({
+                res,
+                message: 'Category deleted successfully'
+            })
+        } catch(err){
+            res.status(500).json({ msg: err })
         }
     }
 }
