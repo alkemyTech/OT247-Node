@@ -9,12 +9,14 @@ const {
   registerUser,
   deleteUserService,
   updateUserService,
+  userLoginService,
   getUsersService,
 } = require('../services/user')
 
 const {
   sendMail,
 } = require('../services/sendgrid')
+
 
 module.exports = {
   userRegister: catchAsync(async (req, res, next) => {
@@ -85,5 +87,23 @@ module.exports = {
     } catch (error) {
       res.status(400).send('an error has occurred');
     };
-  }
+  },
+  userLogin: catchAsync ( async(req, res, next) => {
+    try{
+      const {email, password} = req.body;
+      const result = await userLoginService(email, password);
+      endpointResponse({
+        res,
+        message: 'User login success',
+        body: result
+      });
+
+    }catch(error){
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error user login] - [users - POST]: ${error.message}`,
+      );
+      next(httpError);
+    }
+  }),
 };
