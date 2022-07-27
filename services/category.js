@@ -16,4 +16,16 @@ const getCategoryAsAdmin = async (id) => {
   }
 };
 
-module.exports = { createCategory, getCategoryAsAdmin }
+const deleteCategoryById = async (id) => {
+  try {
+    return await Category.destroy({ where: { id } })
+  } catch (err) {
+    throw err
+  }
+}
+
+module.exports = { 
+  createCategory, 
+  deleteCategoryById,
+  getCategoryAsAdmin
+}
