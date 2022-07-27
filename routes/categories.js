@@ -6,7 +6,8 @@ const categoryCtrl = require('../controllers/categories');
 const { schemaValidator } = require('../middlewares/validator')
 const { category } = require('../schemas/category')
 const { categoryExists } = require('../middlewares/categoryExists')
-
+const { updateCategoryById } = require('../services/category')
+ 
 router
   .get('/', isAdmin, categoryCtrl.getCategoriesNames)
   .post('/', verify, isAdmin, schemaValidator(category), categoryCtrl.createCategory)

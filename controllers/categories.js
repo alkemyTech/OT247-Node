@@ -3,9 +3,8 @@ const { Category } = require('../models');
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-
 const { updateCategoryById } = require('../services/category')
-const { endpointResponse } = require('../helpers/success')
+
 
 const categoryService = require('../services/category')
 
