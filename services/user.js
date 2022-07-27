@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { ErrorObject } = require('../helpers/error')
 const { User } = require('../models')
 
@@ -18,7 +19,48 @@ const deleteUserService = async (id) => {
   }
 };
 
+const updateUserService = async (id, userData) => {
+  try {
+    return await User.update(userData , { where: { id } });
+  } catch (err) {
+    throw err
+  }
+};
+
+const getUsersService = async () => {
+  try {
+    return await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+  } catch (err) {
+    return { error: err };
+  }
+}
+const userLoginService = async (email, password) => {
+    try{
+        const userFinded = await User.findOne({ where: {email}});
+        if(userFinded === null){
+            throw new ErrorObject('email or password doesnt match', 400)
+        }
+        
+        const match = await bcrypt.compare(password, userFinded.password);
+
+        if(match){
+            return userFinded;
+        }else{
+            throw new ErrorObject('ok:false', 400)
+        }
+
+    }catch(error){
+        throw new ErrorObject(error.message, error.statusCode || 500)
+    }
+  }
+  
+
 module.exports = {
     registerUser,
     deleteUserService,
+    updateUserService,
+    getUsersService,
+    userLoginService
 }

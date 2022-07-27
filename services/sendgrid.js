@@ -14,10 +14,12 @@ const sendMail = async ({ email, subject, text, html, sandboxMode = false }) => 
       sandbox_mode: {
         enable: sandboxMode
       }
-    }
+    },
+    templateId: templateId,
+    dynamic_template_data: template
   }
 
-  try {
+try {
     await sgMail.send(msg)
   } catch (err) {
     if (err.response) {
