@@ -3,7 +3,7 @@ var router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
-const activitiesRouter = require('./activities');
+const newsRouter = require('./news');
 const authRouter = require('./auth');
 
 /* GET home page. */
@@ -20,7 +20,7 @@ router.use('/categories', categoriesRouter);
 //Organizations
 router.use('/organizations', organizationsRouter);
 
-//Activities
-router.use('/activities', activitiesRouter);
+//News
+router.use('/news', newsRouter);
 
 module.exports = router;
