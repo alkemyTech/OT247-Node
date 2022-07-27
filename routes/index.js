@@ -15,6 +15,10 @@ router.get('/', function(req, res, next) {
 router.use('/auth', authRouter)
 
 //Categories
+router.get('/login', function(req, res) {
+  res.render('login');
+});
+
 router.use('/categories', categoriesRouter);
 
 //Organizations
