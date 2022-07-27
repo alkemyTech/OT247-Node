@@ -3,7 +3,9 @@ const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
+const {generateJWT} = require('../helpers/generateJWT')
 //const welcomeMail = require('../mail-templates/mail-templates')
+const jwt = require('jsonwebtoken')
 
 const {
   registerUser,
@@ -64,11 +66,14 @@ module.exports = {
   userLogin: catchAsync ( async(req, res, next) => {
     try{
       const {email, password} = req.body;
-      const result = await userLoginService(email, password);
+      const userLoged = await userLoginService(email, password);
+
+      const token = generateJWT(userLoged.id, userLoged.firstName, userLoged.lastName, userLoged.roleId)
       endpointResponse({
         res,
         message: 'User login success',
-        body: result
+        body: userLoged,
+        token
       });
 
     }catch(error){
@@ -79,4 +84,17 @@ module.exports = {
       next(httpError);
     }
   }),
+  verifyTokenUser: (req, res) => {
+    jwt.verify(req.token, 'secretkey', (error, userInfo) => {
+      if(error){
+          res.sendStatus(403)
+      }else{
+          endpointResponse({
+            res,
+            message: 'Token verified',
+            body: userInfo
+          })
+      }
+  })
+  }
 };
