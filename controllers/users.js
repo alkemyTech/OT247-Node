@@ -1,9 +1,11 @@
 const bcrypt = require("bcrypt");
+const createHttpError = require('http-errors')
+const { endpointResponse } = require('../helpers/success')
+const { catchAsync } = require('../helpers/catchAsync')
+const {generateJWT} = require('../helpers/generateJWT')
 
-const createHttpError = require("http-errors");
-const { endpointResponse } = require("../helpers/success");
-const { catchAsync } = require("../helpers/catchAsync");
 //const welcomeMail = require('../mail-templates/mail-templates')
+const jwt = require('jsonwebtoken')
 
 const { generateJWT } = require("../helpers/generateJWT");
 const {
@@ -80,37 +82,54 @@ module.exports = {
         try {
             const { id } = req.params;
 
-            const { firstName, lastName, photo } = req.body;
-            await updateUserService(id, { firstName, lastName, photo });
+      const { firstName, lastName, photo } = req.body
+      await updateUserService(id , { firstName, lastName, photo })
+  
+      endpointResponse({ res, message: 'User updated successfully' }) 
+      } catch (err) {
+        res.status(500).json({ msg: err.message })
+    }
+  },
+  getUsers: async (req, res) => {
+    try {
+      const users = await getUsersService();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(400).send('an error has occurred');
+    }
+  },
+  userLogin: catchAsync ( async(req, res, next) => {
+    try{
+      const {email, password} = req.body;
+      const userLoged = await userLoginService(email, password);
 
-            endpointResponse({ res, message: "User updated successfully" });
-        } catch (err) {
-            res.status(500).json({ msg: err.message });
-        }
-    },
-    getUsers: async (req, res) => {
-        try {
-            const users = await getUsersService();
-            res.status(200).json(users);
-        } catch (error) {
-            res.status(400).send("an error has occurred");
-        }
-    },
-    userLogin: catchAsync(async (req, res, next) => {
-        try {
-            const { email, password } = req.body;
-            const result = await userLoginService(email, password);
-            endpointResponse({
-                res,
-                message: "User login success",
-                body: result,
-            });
-        } catch (error) {
-            const httpError = createHttpError(
-                error.statusCode,
-                `[Error user login] - [users - POST]: ${error.message}`
-            );
-            next(httpError);
-        }
-    }),
+      const token = generateJWT(userLoged.id, userLoged.firstName, userLoged.lastName, userLoged.roleId)
+      endpointResponse({
+        res,
+        message: 'User login success',
+        body: userLoged,
+        token
+      });
+
+    }catch(error){
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error user login] - [users - POST]: ${error.message}`,
+      );
+      next(httpError);
+    }
+  }),
+  verifyTokenUser: (req, res) => {
+    jwt.verify(req.token, 'secretkey', (error, userInfo) => {
+      if(error){
+          res.sendStatus(403)
+      }else{
+          endpointResponse({
+            res,
+            message: 'Token verified',
+            body: userInfo
+          })
+      }
+  })
+  }
 };
