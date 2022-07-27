@@ -3,17 +3,20 @@ const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-//const welcomeMail = require('../mail-templates/mail-templates')
+// const welcomeMail = require('../mail-templates/mail-templates')
 
 const {
   registerUser,
   deleteUserService,
+  updateUserService,
+  userLoginService,
   getUsersService,
 } = require('../services/user')
 
 const {
   sendMail,
 } = require('../services/sendgrid')
+
 
 module.exports = {
   userRegister: catchAsync(async (req, res, next) => {
@@ -64,6 +67,18 @@ module.exports = {
       } catch (err) {
         res.status(400).send('an error has occurred');
       }
+    },
+  updateUser: async (req, res) => {
+    try {
+      const { id } = req.params
+
+      const { firstName, lastName, photo } = req.body
+      await updateUserService(id , { firstName, lastName, photo })
+  
+      endpointResponse({ res, message: 'User updated successfully' }) 
+      } catch (err) {
+        res.status(500).json({ msg: err.message })
+    }
   },
   getUsers: async (req, res) => {
     try {
@@ -72,5 +87,23 @@ module.exports = {
     } catch (error) {
       res.status(400).send('an error has occurred');
     };
-  }
+  },
+  userLogin: catchAsync ( async(req, res, next) => {
+    try{
+      const {email, password} = req.body;
+      const result = await userLoginService(email, password);
+      endpointResponse({
+        res,
+        message: 'User login success',
+        body: result
+      });
+
+    }catch(error){
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error user login] - [users - POST]: ${error.message}`,
+      );
+      next(httpError);
+    }
+  }),
 };

@@ -2,7 +2,7 @@ const createHttpError = require('http-errors')
 
 const isAdmin = async (req, res, next) => {
   try {
-    const { roleId } = req.body.response
+    const { roleId } = req.body
     if (roleId !== 2) return res.status(401).send('[Unauthorized - User] - [Access - Denied]')
     next()
   } catch (error) {

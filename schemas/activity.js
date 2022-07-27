@@ -1,4 +1,4 @@
-exports.category = {
+exports.activity = {
   name: {
     exists: {
       errorMessage: 'There must be a name',
@@ -10,18 +10,19 @@ exports.category = {
       errorMessage: 'The name must be a string',
     },
   },
-  description: {
+  content: {
     exists: {
-      errorMessage: 'There must be a description',
+      errorMessage: 'There must be a content',
     },
     notEmpty: {
-      errorMessage: 'Description is empty',
+      errorMessage: 'content is empty',
     },
     isString: {
-      errorMessage: 'The description must be a string',
+      errorMessage: 'The content must be a string',
     },
   },
   image: {
+    optional: true,
     exists: {
       errorMessage: 'There must be an image',
     },
@@ -30,8 +31,7 @@ exports.category = {
     },
     isString: {
       errorMessage: 'The image must be a string',
+        
     },
-      options: { checkFalsy: true },
-    }
-  }
+  },
 }
