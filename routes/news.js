@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const { getNewsById } = require('../controllers/news');
 const { isAdmin } = require('../middlewares/isAdmin');

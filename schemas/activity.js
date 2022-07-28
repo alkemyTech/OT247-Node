@@ -31,7 +31,7 @@ exports.activity = {
     },
     isString: {
       errorMessage: 'The image must be a string',
-        
+
     },
   },
-}
+};

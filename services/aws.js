@@ -1,12 +1,12 @@
-const fs = require('fs')
-const { v4: uuid } = require('uuid')
-const AWS = require('aws-sdk')
-const multer = require('multer')
-const path = require('path')
+const fs = require('fs');
+const { v4: uuid } = require('uuid');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const path = require('path');
 
-const { ErrorObject } = require('../helpers/error')
+const { ErrorObject } = require('../helpers/error');
 
-const bucketName = process.env.S3_AWS_BUCKET_NAME
+const bucketName = process.env.S3_AWS_BUCKET_NAME;
 
 const s3 = new AWS.S3({
   credentials: {
