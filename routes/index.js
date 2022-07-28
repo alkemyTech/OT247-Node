@@ -10,7 +10,7 @@ const newsRouter = require('./news');
 const activitiesRouter = require('./activities');
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 

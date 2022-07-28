@@ -6,7 +6,7 @@ const existCategory = async (idCategory) => {
     const category = await Category.findByPk(idCategory);
     return category;
   } catch (err) {
-    console.log(err);
+    throw new ErrorObject(404, 'Category not found');
   }
 };
 

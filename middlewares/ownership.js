@@ -4,9 +4,9 @@ const { ErrorObject } = require('../helpers/error');
 const ownership = async (req, res, next) => {
   try {
     const { id: paramId } = req.params;
-    const { id: tokenId, roleId } = decryptJWT(req.headers);
+    const { id, roleId } = req.user;
 
-    if (roleId === 2 || Number(paramId) === tokenId) {
+    if (roleId === 2 || Number(paramId) === id) {
       next();
     } else {
       res.status(403).send('[Forbidden - does not have the necessary permissions] - [Access - Denied]');

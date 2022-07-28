@@ -1,6 +1,6 @@
 const {
   getNewsByIdService,
-} = require('../services/news.js');
+} = require('../services/news');
 
 module.exports = {
   getNewsById: async (req, res) => {
@@ -14,6 +14,6 @@ module.exports = {
     if (news === null) return res.status(404).send('news not found');
 
     // Found news
-    res.status(200).json(news);
+    return res.status(200).json(news);
   },
 };

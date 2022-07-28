@@ -12,4 +12,4 @@ class ErrorObject extends Error {
   }
 }
 
-module.exports = ErrorObject;
+module.exports = { ErrorObject };

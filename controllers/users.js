@@ -62,7 +62,7 @@ module.exports = {
   deleteUserById: async (req, res) => {
     try {
       const { id } = req.params;
-      const integerId = Number.isInteger(parseInt(id));
+      const integerId = Number.isInteger(parseInt(id, 10));
 
       // Checks that id param is a integer
       if (!integerId) {
@@ -72,9 +72,12 @@ module.exports = {
 
       // User to eliminate
       const deletedUser = await deleteUserService(id);
-      deletedUser == 1
-        ? res.status(200).send('user deleted')
-        : res.status(404).send('user not found');
+      if (deletedUser === 1) {
+        res.status(200).send('user deleted');
+        return;
+      }
+
+      res.status(404).send('user not found');
     } catch (err) {
       res.status(400).send('an error has occurred');
     }
