@@ -1,11 +1,11 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Organization extends Model {
     static associate(models) {}
-  };
+  }
   Organization.init({
     id: {
       type: DataTypes.INTEGER,
@@ -15,31 +15,31 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     image: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
     phone: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     welcomeText: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
     },
     aboutUsText: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
     },
   }, {
     sequelize,
