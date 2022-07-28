@@ -20,20 +20,20 @@ exports.user = {
   isAuthorized: {
     custom: {
       options: (value, { req, location, path }) => {
-        const { id } = req.params
-        const { userId } = req.user
-        return Number(id) === userId
-      }
+        const { id } = req.params;
+        const { userId } = req.user;
+        return Number(id) === userId;
+      },
     },
-    errorMessage: 'You are not authorized to perform this action'
+    errorMessage: 'You are not authorized to perform this action',
   },
   emptyFields: {
     custom: {
       options: (value, { req, location, path }) => {
-        const { firstName, lastName, photo } = req.body
-        return firstName || lastName || photo
+        const { firstName, lastName, photo } = req.body;
+        return firstName || lastName || photo;
       },
     },
-    errorMessage: 'You have not made any changes'
-  }
-}
+    errorMessage: 'You have not made any changes',
+  },
+};

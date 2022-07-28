@@ -1,6 +1,6 @@
 const { Member } = require('../models');
 
-//Example instead nothing
+// Example instead nothing
 membersController = (req, res) => {};
 
 module.exports = { membersController };

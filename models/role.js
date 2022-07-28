@@ -1,7 +1,7 @@
-'use strict';
-const {  
-  Model
+const {
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Role extends Model {
     /**
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
+  }
   Role.init({
     name: {
       type: DataTypes.STRING,
