@@ -39,9 +39,19 @@ const userLoginService = async (email, password) => {
     }
   }
   
+const getUsersService = async () => {
+  try {
+    return await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+  } catch (err) {
+    return { error: err };
+  }
+}
 
 module.exports = {
     registerUser,
     deleteUserService,
+    getUsersService,
     userLoginService
 }

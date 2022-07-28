@@ -4,14 +4,19 @@ const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
 const {generateJWT} = require('../helpers/generateJWT')
-//const welcomeMail = require('../mail-templates/mail-templates')
 const jwt = require('jsonwebtoken')
 
 const {
   registerUser,
   deleteUserService,
+  getUsersService,
   userLoginService
 } = require('../services/user')
+
+//Se importa pero no se usa?
+// const {
+//   sendMail,
+// } = require('../services/sendgrid')
 
 module.exports = {
   userRegister: catchAsync(async (req, res, next) => {
@@ -44,25 +49,25 @@ module.exports = {
         }
       }),
   deleteUserById: async (req, res) => {
-      try {
-        const { id } = req.params;
-        const integerId = Number.isInteger(parseInt(id));
+    try {
+      const { id } = req.params;
+      const integerId = Number.isInteger(parseInt(id));
 
-        //Checks that id param is a integer
-        if (!integerId) {
-          res.status(412).send('id param has to be a integer');
-          return;
-        }
-
-        // User to eliminate
-        const deletedUser = await deleteUserService(id);
-        deletedUser == 1
-          ? res.status(200).send('user deleted')
-          : res.status(404).send('user not found');
-      } catch (err) {
-        res.status(400).send('an error has occurred');
+      //Checks that id param is a integer
+      if (!integerId) {
+        res.status(412).send('id param has to be a integer');
+        return;
       }
-    },
+
+      // User to eliminate
+      const deletedUser = await deleteUserService(id);
+      deletedUser == 1
+        ? res.status(200).send('user deleted')
+        : res.status(404).send('user not found');
+    } catch (err) {
+      res.status(400).send('an error has occurred');
+    }
+  },
   userLogin: catchAsync ( async(req, res, next) => {
     try{
       const {email, password} = req.body;
@@ -95,6 +100,14 @@ module.exports = {
             body: userInfo
           })
       }
-  })
+    })
+  },
+  getUsers: async (req, res) => {
+    try {
+      const users = await getUsersService();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(400).send('an error has occurred');
+    };
   }
 };
