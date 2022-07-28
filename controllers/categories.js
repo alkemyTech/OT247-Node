@@ -2,7 +2,6 @@ const { Category } = require('../models');
 
 const createHttpError = require('http-errors')
 const { catchAsync } = require('../helpers/catchAsync')
-
 const { endpointResponse } = require('../helpers/success')
 
 const categoryService = require('../services/category')
