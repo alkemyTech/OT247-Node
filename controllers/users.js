@@ -5,7 +5,7 @@ const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { generateJWT } = require('../helpers/generateJWT');
 
-// const welcomeMail = require('../mail-templates/mail-templates')
+const welcomeMail = require('../mail-templates/mail-templates');
 
 const {
   registerUser,
@@ -15,7 +15,7 @@ const {
   getUsersService,
 } = require('../services/user');
 
-const { sendMail } = require('../services/sendgrid');
+const sendMail = require('../services/sendgrid');
 
 module.exports = {
   userRegister: catchAsync(async (req, res, next) => {
@@ -40,8 +40,8 @@ module.exports = {
       sendMail({
         email: body.email,
         subject: 'Welcome to the app',
-        // template: welcomeMail(user),
-        templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8',
+        data: req.user,
+        templateId: welcomeMail(),
       });
 
       // Server response
@@ -104,7 +104,13 @@ module.exports = {
       const { email, password } = req.body;
       const userLoged = await userLoginService(email, password);
 
-      const token = generateJWT(userLoged.id, userLoged.firstName, userLoged.lastName, userLoged.roleId);
+      const token = generateJWT(
+        userLoged.id,
+        userLoged.firstName,
+        userLoged.lastName,
+        userLoged.roleId,
+      );
+
       endpointResponse({
         res,
         message: 'User login success',
