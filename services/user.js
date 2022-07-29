@@ -23,7 +23,7 @@ const updateUserService = async (id, userData) => {
   try {
     return await User.update(userData, { where: { id } });
   } catch (err) {
-    throw err;
+    throw new Error(err.message);
   }
 };
 
@@ -36,6 +36,7 @@ const getUsersService = async () => {
     return { error: err };
   }
 };
+
 const userLoginService = async (email, password) => {
   try {
     const userFinded = await User.findOne({ where: { email } });

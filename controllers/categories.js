@@ -8,7 +8,7 @@ const { updateCategoryById } = require('../services/category');
 const categoryService = require('../services/category');
 
 module.exports = {
-  getCategoriesNames: async (req, res, next) => {
+  getCategoriesNames: async (req, res) => {
     try {
       const categoriesNames = await Category.findAll({
         attributes: ['name'],
@@ -54,7 +54,7 @@ module.exports = {
       next(err);
     }
   },
-  deleteCategoryById: async (req, res, next) => {
+  deleteCategoryById: async (req, res) => {
     try {
       const { id } = req.params;
       await categoryService.deleteCategoryById(id);
