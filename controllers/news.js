@@ -10,8 +10,6 @@ const {
 	  updateNews: catchAsync(async (req, res, next) => {
 		try {
 			const { id } = req.params;
-      //const { name, content, image, categoryId } = req.body;
-      // validar si el dato es number
       const integerId = Number.isInteger(parseInt(id));
       if (integerId) {	
         const updateNews = await updateNewsService(id, req.body);
