@@ -2,7 +2,6 @@ exports.news = {
   name: {
     exists: {
       errorMessage: 'News name is required',
-      options: { checkFalsy: true },
     },
     notEmpty: {
       errorMessage: 'Name is empty',
@@ -12,7 +11,6 @@ exports.news = {
   content: {
     exists: {
       errorMessage: 'News content is required',
-      options: { checkFalsy: true },
     },
     notEmpty: {
       errorMessage: 'Content is empty',
@@ -22,7 +20,6 @@ exports.news = {
   image: {
     exists: {
       errorMessage: 'News image is required',
-      options: { checkFalsy: true },
     },
     notEmpty: {
       errorMessage: 'Image is empty',
@@ -31,12 +28,11 @@ exports.news = {
   },
   categoryId: {
     exists: {
-      errorMessage: 'News image is required',
-      options: { checkFalsy: true },
+      errorMessage: 'News categoryId is required',
     },
     notEmpty: {
       errorMessage: 'categoryID is empty',
     },
-    isNumber: { errorMessage: 'News image should be a number' },
+    isInt: { errorMessage: 'News categoryId should be a integer' },
   }
 }
