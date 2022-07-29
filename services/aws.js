@@ -1,19 +1,56 @@
 const fs = require('fs');
 const { v4: uuid } = require('uuid');
-const AWS = require('aws-sdk');
+const aws = require('aws-sdk');
 const multer = require('multer');
 const path = require('path');
 
 const { ErrorObject } = require('../helpers/error');
 
-const bucketName = process.env.S3_AWS_BUCKET_NAME;
-
-const s3 = new AWS.S3({
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_KEY_SECRET,
-    region: process.env.AWS_BUCKET_REGION,
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../public/uploads'),
+  filename: (req, file, next) => {
+    next(null, uuid() + path.extname(file.originalname));
   },
 });
 
-exports.s3 = s3;
+const localUpload = multer({
+  storage,
+  dest: path.join(__dirname, '../public/uploads'),
+  limits: { fileSize: 20000000 },
+}).single('alkemy');
+
+const s3 = new aws.S3({
+  credentials: {
+    accessKeyId: 'AKIAQID7HILNMXMDTT7E',
+    secretAccessKey: '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',
+  },
+});
+
+exports.uploadImage = async (file, deleteLocal = true) => {
+  const fileStream = fs.createReadStream(file.path);
+  const uploadParams = {
+    Bucket: process.env.S3_AWS_BUCKET_NAME,
+    Body: fileStream,
+    Key: file.filename,
+  };
+
+  const upload = await s3
+    .upload(uploadParams, (err) => {
+      if (err) {
+        throw new ErrorObject(err);
+      }
+    })
+    .promise()
+    .then(
+      deleteLocal
+        && fs.unlink(file.path, (err) => {
+          if (err) throw ErrorObject(err);
+        }),
+    );
+
+  return upload.Location;
+};
+
+module.exports = {
+  s3, localUpload,
+};
