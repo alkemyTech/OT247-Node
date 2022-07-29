@@ -8,9 +8,10 @@ const authRouter = require('./auth');
 const userRouter = require('./users');
 const newsRouter = require('./news');
 const activitiesRouter = require('./activities');
+const contactsRouter = require('./contacts');
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
@@ -35,5 +36,8 @@ router.use('/activities', activitiesRouter);
 
 // News
 router.use('/news', newsRouter);
+
+// Contacts
+router.use('/contacts', contactsRouter);
 
 module.exports = router;
