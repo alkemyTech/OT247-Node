@@ -41,6 +41,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    facebookUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    linkedinUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    instagramUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   }, {
     sequelize,
     modelName: 'Organization',
