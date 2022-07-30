@@ -2,7 +2,7 @@ const { ErrorObject } = require('../helpers/error');
 const { News } = require('../models');
 const { existNews } = require('../helpers/existNews');
 
-const destroyNews = async (id) => {
+const deleteNewsService = async (id) => {
   try {
     const news = await existNews(id);
     if (!news) throw new ErrorObject('News not found', 404);
@@ -12,4 +12,4 @@ const destroyNews = async (id) => {
   }
 };
 
-module.exports = { destroyNews };
+module.exports = { deleteNewsService };
