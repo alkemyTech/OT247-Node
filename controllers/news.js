@@ -1,6 +1,5 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
-const { parseIntId } = require('../helpers/parseIntId');
 
 const { destroyNews } = require('../services/news');
 
@@ -9,7 +8,7 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      const deletedNews = await destroyNews(parseIntId(id));
+      const deletedNews = await destroyNews(parseInt(id, 10));
       endpointResponse({
         res,
         message: 'News deleted successfully',
