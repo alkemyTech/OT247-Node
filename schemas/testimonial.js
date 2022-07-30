@@ -2,6 +2,7 @@ exports.testimonial = {
     name: {
         exists: {
             errorMessage: 'There must be a name',
+            options: { checkFalsy: true },
         },
         notEmpty: {
             errorMessage: 'Name is empty',
@@ -13,6 +14,7 @@ exports.testimonial = {
     image: {
         exists: {
             errorMessage: 'There must be an image',
+            options: { checkFalsy: true },
         },
         notEmpty: {
             errorMessage: 'Image is empty',
