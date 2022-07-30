@@ -1,8 +1,9 @@
-const express = require('express')
-const router = express.Router()
-const { isAdmin } = require('../middlewares/isAdmin')
-const { deleteNews } = require('../controllers/news')
+const express = require('express');
 
-router.delete('/:id', isAdmin, deleteNews)
+const router = express.Router();
+const { isAdmin } = require('../middlewares/isAdmin');
+const { deleteNews } = require('../controllers/news');
 
-module.exports = router
+router.delete('/:id', isAdmin, deleteNews);
+
+module.exports = router;

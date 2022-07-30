@@ -1,13 +1,13 @@
 const { News } = require('../models');
-const { ErrorObject } = require('../helpers/error')
+const { ErrorObject } = require('./error');
 
-const existNews = async(idNews) => {
-    try{
-        const news = await News.findByPk(idNews)
-        return news;
-    }catch(err){
-        throw new ErrorObject(404, 'News not found')
-    }
-}
+const existNews = async (idNews) => {
+  try {
+    const news = await News.findByPk(idNews);
+    return news;
+  } catch (err) {
+    throw new ErrorObject(404, 'News not found');
+  }
+};
 
-module.exports = { existNews }
+module.exports = { existNews };

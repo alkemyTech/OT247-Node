@@ -1,5 +1,3 @@
 module.exports = {
-	parseIntId: (id) => {
-		return parseInt(id, 10)
-	}
-}
+  parseIntId: (id) => parseInt(id, 10),
+};
