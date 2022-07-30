@@ -11,7 +11,7 @@ const activitiesRouter = require('./activities');
 const slidesRouter = require('./slides');
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
