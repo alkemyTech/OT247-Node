@@ -1,11 +1,13 @@
 const { Contact } = require('../models');
 
-const ErrorObject = require('../helpers/error');
+const { ErrorObject } = require('../helpers/error');
 
-//Create a new contact
+// Create a new contact
 const createContact = async (body) => {
   try {
-    const { name, phone, email, message } = body;
+    const {
+      name, phone, email, message,
+    } = body;
 
     return await Contact.create({
       name,

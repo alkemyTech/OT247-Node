@@ -1,7 +1,7 @@
 const contactService = require('../services/contact');
 
 const { endpointResponse } = require('../helpers/success');
-const ErrorObject = require('../helpers/error');
+const { ErrorObject } = require('../helpers/error');
 
 module.exports = {
   createContact: async (req, res) => {
