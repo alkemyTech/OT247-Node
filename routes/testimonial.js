@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const { isAdmin } = require('../middlewares/isAdmin');
-const testimonialCtrl = require('../controllers/testimonial');
+const { deleteTestimonial } = require('../controllers/testimonial');
 
-router.delete('/:id', isAdmin, testimonialCtrl.deleteTestimonial);
+router.delete('/:id', isAdmin, deleteTestimonial);
 
 module.exports = router;
