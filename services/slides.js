@@ -1,12 +1,16 @@
 const { Slide } = require('../models');
+const { ErrorObject } = require('../helpers/error');
 
 const getSlidesService = async () => {
   try {
-    return await Slide.findAll({
+    const slides = await Slide.findAll({
       attributes: ['imageUrl', 'order'],
     });
-  } catch (err) {
-    return { error: err };
+    if (!slides) throw new ErrorObject(404, 'Slides not found');
+
+    return slides;
+  } catch (error) {
+    throw new ErrorObject(error.statusCode, error.message);
   }
 };
 

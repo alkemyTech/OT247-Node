@@ -1,12 +1,23 @@
+const createHttpError = require('http-errors');
+const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
 const { getSlidesService } = require('../services/slides');
 
 module.exports = {
-  getSlides: async (req, res) => {
+  getSlides: catchAsync(async (req, res, next) => {
     try {
       const slides = await getSlidesService();
-      res.status(200).json(slides);
+      endpointResponse({
+        res,
+        message: 'Slides listed successfully',
+        body: slides,
+      });
     } catch (error) {
-      res.status(400).send('an error has occurred');
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error listing slides] - [slides - GET]: ${error.message}`,
+      );
+      next(httpError);
     }
-  },
+  }),
 };
