@@ -38,6 +38,6 @@ router.use('/activities', activitiesRouter);
 router.use('/news', newsRouter);
 
 // Members
-router.get('/members', membersRouter);
+router.use('/members', membersRouter);
 
 module.exports = router;
