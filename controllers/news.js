@@ -1,10 +1,11 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
 
 const { deleteNewsService } = require('../services/news');
 
 module.exports = {
-  deleteNews: async (req, res, next) => {
+  deleteNews: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
 
@@ -21,5 +22,5 @@ module.exports = {
       );
       next(httpError);
     }
-  },
+  }),
 };
