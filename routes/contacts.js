@@ -4,6 +4,6 @@ const router = express.Router();
 const { getAllContacts } = require('../controllers/contacts');
 const { isAdmin } = require('../middlewares/isAdmin');
 
-router.get('/', getAllContacts);
+router.get('/', isAdmin, getAllContacts);
 
 module.exports = router;
