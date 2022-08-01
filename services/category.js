@@ -28,9 +28,9 @@ const updateCategoryById = async (id, body) => {
 
 const createCategory = async (newCategory) => {
   try {
-    return createdCategory = await Category.create(newCategory);
+    return await Category.create(newCategory);
   } catch (err) {
-    throw err;
+    throw new ErrorObject(500, err.message);
   }
 };
 
@@ -38,7 +38,7 @@ const deleteCategoryById = async (id) => {
   try {
     return await Category.destroy({ where: { id } });
   } catch (err) {
-    throw err;
+    throw new ErrorObject(500, err.message);
   }
 };
 

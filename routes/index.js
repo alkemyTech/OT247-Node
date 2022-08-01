@@ -9,9 +9,10 @@ const userRouter = require('./users');
 const newsRouter = require('./news');
 const activitiesRouter = require('./activities');
 const slidesRouter = require('./slides');
+const testimonialsRouter = require('./testimonials');
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
@@ -38,5 +39,8 @@ router.use('/activities', activitiesRouter);
 router.use('/news', newsRouter);
 
 router.use('/slides', slidesRouter);
+
+// Testimonials
+router.use('/testimonials', testimonialsRouter);
 
 module.exports = router;
