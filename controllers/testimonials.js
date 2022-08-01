@@ -1,7 +1,7 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const { createTestimonialsService, updateTestimonial } = require('../services/testimonial');
+const { createTestimonialsService, updateTestimonialService } = require('../services/testimonial');
 
 module.exports = {
   createTestimonial: catchAsync(async (req, res, next) => {
@@ -29,7 +29,7 @@ module.exports = {
       const { body } = req;
       const { id } = req.params;
 
-      const testimonial = await updateTestimonial(id, body);
+      const testimonial = await updateTestimonialService(id, body);
       endpointResponse({
         code: 200,
         res,
