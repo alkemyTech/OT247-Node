@@ -7,6 +7,7 @@ const organizationsRouter = require('./organizations');
 const authRouter = require('./auth');
 const userRouter = require('./users');
 const newsRouter = require('./news');
+
 const activitiesRouter = require('./activities');
 const testimonialsRouter = require('./testimonials');
 
