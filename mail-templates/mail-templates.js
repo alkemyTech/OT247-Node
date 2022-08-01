@@ -1,4 +1,3 @@
-module.exports = welcomeMail = (user) => dynamic_template_data = {
-	  firstName: user.firstName,
-	  lastName: user.lastName,
-};
+const welcomeEmail = () => 'd-4792e3fb740e47ad94ced288fdaf98f8';
+
+module.exports = welcomeEmail;

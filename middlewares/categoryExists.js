@@ -7,9 +7,9 @@ const categoryExists = async (req, res, next) => {
     const category = await Category.findOne({ where: { id } });
     if (!category) return res.status(404).json({ msg: 'This category does not exist' });
 
-    next();
+    return next();
   } catch (err) {
-    res.status(500).json({ msg: err });
+    return res.status(500).json({ msg: err });
   }
 };
 

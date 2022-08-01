@@ -5,7 +5,7 @@ const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { generateJWT } = require('../helpers/generateJWT');
 
-// const welcomeMail = require('../mail-templates/mail-templates')
+const welcomeMail = require('../mail-templates/mail-templates');
 
 const {
   registerUser,
@@ -15,7 +15,7 @@ const {
   getUsersService,
 } = require('../services/user');
 
-const { sendMail } = require('../services/sendgrid');
+const sendMail = require('../services/sendgrid');
 
 module.exports = {
   userRegister: catchAsync(async (req, res, next) => {
@@ -40,8 +40,8 @@ module.exports = {
       sendMail({
         email: body.email,
         subject: 'Welcome to the app',
-        // template: welcomeMail(user),
-        templateId: 'd-4792e3fb740e47ad94ced288fdaf98f8',
+        data: req.user,
+        templateId: welcomeMail(),
       });
 
       // Server response
@@ -62,7 +62,7 @@ module.exports = {
   deleteUserById: async (req, res) => {
     try {
       const { id } = req.params;
-      const integerId = Number.isInteger(parseInt(id));
+      const integerId = Number.isInteger(parseInt(id, 10));
 
       // Checks that id param is a integer
       if (!integerId) {
@@ -72,9 +72,12 @@ module.exports = {
 
       // User to eliminate
       const deletedUser = await deleteUserService(id);
-      deletedUser == 1
-        ? res.status(200).send('user deleted')
-        : res.status(404).send('user not found');
+      if (deletedUser === 1) {
+        res.status(200).send('user deleted');
+        return;
+      }
+
+      res.status(404).send('user not found');
     } catch (err) {
       res.status(400).send('an error has occurred');
     }
@@ -104,7 +107,13 @@ module.exports = {
       const { email, password } = req.body;
       const userLoged = await userLoginService(email, password);
 
-      const token = generateJWT(userLoged.id, userLoged.firstName, userLoged.lastName, userLoged.roleId);
+      const token = generateJWT(
+        userLoged.id,
+        userLoged.firstName,
+        userLoged.lastName,
+        userLoged.roleId,
+      );
+
       endpointResponse({
         res,
         message: 'User login success',

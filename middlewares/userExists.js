@@ -7,9 +7,9 @@ const userExists = async (req, res, next) => {
     const user = await User.findOne({ where: { id } });
     if (!user) return res.status(404).json({ msg: 'This user does not exist' });
 
-    next();
+    return next();
   } catch (err) {
-    res.status(500).json({ msg: err });
+    return res.status(500).json({ msg: err });
   }
 };
 
