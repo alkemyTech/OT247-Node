@@ -1,17 +1,18 @@
-const createHttpError = require('http-errors')
+const createHttpError = require('http-errors');
 
 const isAdmin = async (req, res, next) => {
   try {
-    const { roleId } = req.body
-    if (roleId !== 2) return res.status(401).send('[Unauthorized - User] - [Access - Denied]')
-    next()
+    const { roleId } = req.user;
+
+    if (roleId !== 2) return res.status(401).send('[Unauthorized - User] - [Access - Denied]');
+    return next();
   } catch (error) {
     const httpError = createHttpError(
       error.statusCode = 401,
       `[Unauthorized - User] - [Access - Denied]: ${error.message}`,
-    )
-    next(httpError)
+    );
+    return next(httpError);
   }
-}
+};
 
-module.exports = { isAdmin }
+module.exports = { isAdmin };

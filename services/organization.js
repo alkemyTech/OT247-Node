@@ -23,7 +23,7 @@ const updateOrganization = async (id, body) => {
         welcomeText: body.welcomeText,
         aboutUsText: body.aboutUsText,
       },
-      { where: { id } }
+      { where: { id } },
     );
   } catch (err) {
     throw new Error(err.message);

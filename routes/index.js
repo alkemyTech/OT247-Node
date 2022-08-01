@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+
+const router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
@@ -7,32 +8,36 @@ const authRouter = require('./auth');
 const userRouter = require('./users');
 const newsRouter = require('./news');
 const activitiesRouter = require('./activities');
+const testimonialsRouter = require('./testimonials');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
-//Auth
-router.use('/auth', authRouter)
+// Auth
+router.use('/auth', authRouter);
 
-//Categories
-router.get('/login', function(req, res) {
+// Categories
+router.get('/login', (req, res) => {
   res.render('login');
 });
 
 router.use('/categories', categoriesRouter);
 
-//Organizations
+// Organizations
 router.use('/organizations', organizationsRouter);
 
-//Users
-router.use('/users', usersRouter);
+// Users
+router.use('/users', userRouter);
 
-//Activities
+// Activities
 router.use('/activities', activitiesRouter);
 
-//News
+// News
 router.use('/news', newsRouter);
+
+// Testimonials
+router.use('/testimonials', testimonialsRouter);
 
 module.exports = router;
