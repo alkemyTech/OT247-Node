@@ -4,7 +4,11 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class Organization extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Organization.hasMany(models.Slide, {
+        foreignKey: 'organizationId',
+      });
+    }
   }
   Organization.init({
     id: {
