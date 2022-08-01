@@ -1,13 +1,18 @@
-var express = require('express');
-var router = express.Router();
-const { deleteUserById } = require('../controllers/users');
+const express = require('express');
+
+const router = express.Router();
+const { getUsers, updateUser, deleteUserById } = require('../controllers/users');
+const { userExists } = require('../middlewares/userExists');
+const { verify } = require('../middlewares/verifyToken');
+const { schemaValidator } = require('../middlewares/validator');
+const { user } = require('../schemas/updateUser');
+const { isAdmin } = require('../middlewares/isAdmin');
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/', isAdmin, getUsers);
 
-//DELETE delete user
-router.delete('/:id', deleteUserById);
+router.route('/:id')
+  .patch(userExists, schemaValidator(user), updateUser)
+  .delete(deleteUserById);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { createNews } = require('../services/news');
+const { createNews, getNewsByIdService } = require('../services/news');
 const { endpointResponse } = require('../helpers/success');
 
 module.exports = {
@@ -19,4 +19,17 @@ module.exports = {
       res.status(400).json({ status: 400, message: 'An error has occurred', error: err.message });
     }
   },
-};
+  getNewsById: async (req, res) => {
+    const { id } = req.params;
+    const news = await getNewsByIdService(id);
+
+    // Error
+    if (news !== null && news.error) { return res.status(400).send('an error has occurred'); }
+
+    // In case the news was not found
+    if (news === null) return res.status(404).send('news not found');
+
+    // Found news
+    return res.status(200).json(news);
+  },
+}
