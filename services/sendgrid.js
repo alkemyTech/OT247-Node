@@ -4,20 +4,22 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(sendgridKey);
 
 const sendMail = async ({
-  email, subject, text, sandboxMode = false, templateId, data,
+  email, subject, title, text, templateId, sandboxMode = false,
 }) => {
   const msg = {
     to: email,
     from: senderEmail,
-    subject,
-    text,
     mail_settings: {
       sandbox_mode: {
         enable: sandboxMode,
       },
     },
     templateId,
-    dynamic_template_data: data,
+    dynamic_template_data: {
+      subject,
+      title,
+      text,
+    },
   };
 
   try {
