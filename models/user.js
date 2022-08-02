@@ -35,8 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    roleId: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE,
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     sequelize,
     paranoid: true,
