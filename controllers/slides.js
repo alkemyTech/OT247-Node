@@ -1,9 +1,28 @@
-const slidesService = require("../services/slides");
-const { endpointResponse } = require("../helpers/success");
-const { ErrorObject } = require("../helpers/error");
 const createHttpError = require("http-errors");
+const { endpointResponse } = require("../helpers/success");
+const { catchAsync } = require("../helpers/catchAsync");
+const { getSlidesService } = require("../services/slides");
+const slidesService = require("../services/slides");
+const { ErrorObject } = require("../helpers/error");
 
 module.exports = {
+    getSlides: catchAsync(async (req, res, next) => {
+        try {
+            const slides = await getSlidesService();
+            endpointResponse({
+                res,
+                message: "Slides listed successfully",
+                body: slides,
+            });
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error listing slides] - [slides - GET]: ${error.message}`
+            );
+            next(httpError);
+        }
+    }),
+
     deleteSlideById: async (req, res) => {
         try {
             const { id } = req.params;

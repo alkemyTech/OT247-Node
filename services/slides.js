@@ -1,6 +1,19 @@
 const { Slide } = require('../models');
 const { ErrorObject } = require('../helpers/error');
 
+const getSlidesService = async () => {
+  try {
+    const slides = await Slide.findAll({
+      attributes: ['imageUrl', 'order'],
+    });
+    if (!slides) throw new ErrorObject(404, 'Slides not found');
+
+    return slides;
+  } catch (error) {
+    throw new ErrorObject(error.statusCode, error.message);
+  }
+};
+
 const deleteSlideById = async (id) => {
   try {
     return await Slide.destroy({ where: { id } });
@@ -17,4 +30,4 @@ const getSlideById = async (id) => {
   }
 };
 
-module.exports = { getSlideById, deleteSlideById };
+module.exports = { getSlideById, getSlidesService, deleteSlideById };
