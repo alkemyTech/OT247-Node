@@ -4,11 +4,14 @@ const router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
+const newsRouter = require('./news');
 const authRouter = require('./auth');
 const userRouter = require('./users');
-const newsRouter = require('./news');
+
 const activitiesRouter = require('./activities');
 const contactsRouter = require('./contacts');
+const slidesRouter = require('./slides');
+const testimonialsRouter = require('./testimonials');
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -39,5 +42,9 @@ router.use('/news', newsRouter);
 
 // Contacts
 router.use('/contacts', contactsRouter);
+router.use('/slides', slidesRouter);
+
+// Testimonials
+router.use('/testimonials', testimonialsRouter);
 
 module.exports = router;

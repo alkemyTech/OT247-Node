@@ -34,6 +34,14 @@ const createCategory = async (newCategory) => {
   }
 };
 
+const getCategoryAsAdmin = async (id) => {
+  try {
+    return await Category.findOne({ where: { id } });
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 const deleteCategoryById = async (id) => {
   try {
     return await Category.destroy({ where: { id } });
@@ -43,7 +51,8 @@ const deleteCategoryById = async (id) => {
 };
 
 module.exports = {
-  createCategory,
-  deleteCategoryById,
-  updateCategoryById,
-};
+    createCategory,
+    deleteCategoryById,
+    updateCategoryById,
+    getCategoryAsAdmin
+}
