@@ -4,7 +4,7 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class Organization extends Model {
-    static associate(models) {}
+    static associate() {}
   }
   Organization.init({
     id: {
