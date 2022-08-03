@@ -4,7 +4,11 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class Organization extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Organization.hasMany(models.Slide, {
+        foreignKey: 'organizationId',
+      });
+    }
   }
   Organization.init({
     id: {
@@ -39,6 +43,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     aboutUsText: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    facebookUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    linkedinUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    instagramUrl: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   }, {

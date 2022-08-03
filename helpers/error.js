@@ -4,7 +4,7 @@ class ErrorObject extends Error {
 
     this.message = message;
     this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
     this.isOperational = true;
     this.errors = errors;
 
@@ -12,4 +12,4 @@ class ErrorObject extends Error {
   }
 }
 
-module.exports = ErrorObject;
+module.exports = { ErrorObject };
