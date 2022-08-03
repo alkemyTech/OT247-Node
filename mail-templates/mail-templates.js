@@ -1,3 +1,3 @@
-const welcomeEmail = () => 'd-4792e3fb740e47ad94ced288fdaf98f8';
+const welcomeEmail = () => 'd-f390cce69070452e96fce478834e327f';
 
 module.exports = welcomeEmail;

@@ -69,5 +69,32 @@ module.exports = {
         errorMessage: 'AboutUsText must be a string',
       },
     },
+    facebookUrl: {
+      optional: true,
+      notEmpty: {
+        errorMessage: 'facebookUrl must not be empty',
+      },
+      isString: {
+        errorMessage: 'facebookUrl must be a string',
+      },
+    },
+    instagramUrl: {
+      optional: true,
+      notEmpty: {
+        errorMessage: 'instagramUrl must not be empty',
+      },
+      isString: {
+        errorMessage: 'instagramUrl must be a string',
+      },
+    },
+    linkedinUrl: {
+      optional: true,
+      notEmpty: {
+        errorMessage: 'linkedinUrl must not be empty',
+      },
+      isString: {
+        errorMessage: 'linkedinUrl must be a string',
+      },
+    },
   },
 };

@@ -5,10 +5,12 @@ const router = express.Router();
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
 const activitiesRouter = require('./activities');
+const newsRouter = require('./news');
 const authRouter = require('./auth');
 const userRouter = require('./users');
-const newsRouter = require('./news');
-const activitiesRouter = require('./activities');
+const membersRouter = require('./members');
+const contactsRouter = require('./contacts');
+const slidesRouter = require('./slides');
 const testimonialsRouter = require('./testimonials');
 
 /* GET home page. */
@@ -29,7 +31,7 @@ router.use('/categories', categoriesRouter);
 // Organizations
 router.use('/organizations', organizationsRouter);
 
-//Activities
+// Activities
 router.use('/activities', activitiesRouter);
 
 // Users
@@ -40,6 +42,13 @@ router.use('/activities', activitiesRouter);
 
 // News
 router.use('/news', newsRouter);
+
+// Members
+router.use('/members', membersRouter);
+
+// Contacts
+router.use('/contacts', contactsRouter);
+router.use('/slides', slidesRouter);
 
 // Testimonials
 router.use('/testimonials', testimonialsRouter);
