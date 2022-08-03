@@ -6,6 +6,10 @@ const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
 const newsRouter = require('./news');
 const authRouter = require('./auth');
+const userRouter = require('./users');
+
+const activitiesRouter = require('./activities');
+const testimonialsRouter = require('./testimonials');
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -16,12 +20,25 @@ router.get('/', (req, res) => {
 router.use('/auth', authRouter);
 
 // Categories
+router.get('/login', (req, res) => {
+  res.render('login');
+});
+
 router.use('/categories', categoriesRouter);
 
 // Organizations
 router.use('/organizations', organizationsRouter);
 
+// Users
+router.use('/users', userRouter);
+
+// Activities
+router.use('/activities', activitiesRouter);
+
 // News
 router.use('/news', newsRouter);
+
+// Testimonials
+router.use('/testimonials', testimonialsRouter);
 
 module.exports = router;

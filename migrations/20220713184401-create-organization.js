@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Organizations', {
@@ -10,47 +9,47 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       image: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       address: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       phone: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       welcomeText: {
         type: Sequelize.TEXT,
-        allowNull: false
+        allowNull: false,
       },
       aboutUsText: {
         type: Sequelize.TEXT,
-        allowNull: true
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       deletedAt: {
         type: Sequelize.DATE,
         allowNull: true,
-      }
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('organizations');
-  }
+  },
 };
