@@ -1,3 +1,4 @@
+'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -16,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
     type: DataTypes.STRING,
-    deletedAt: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'News',
