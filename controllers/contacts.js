@@ -1,12 +1,30 @@
-const contactService = require('../services/contact');
-
+const createHttpError = require('http-errors');
+const { getContacts } = require('../helpers/getContacts');
 const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
+const contactService = require('../services/contact');
 const { ErrorObject } = require('../helpers/error');
-
 const welcomeMail = require('../mail-templates/mail-templates');
 const sendMail = require('../services/sendgrid');
 
 module.exports = {
+    getAllContacts: catchAsync ( async (req, res, next) => {
+        try{
+            const allContacts = await getContacts();
+            endpointResponse({
+                res,
+                message: 'Contacts finded',
+                body: allContacts
+            });
+        }catch(error){
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error user login] - [contacts - POST]: ${error.message}`,
+            );
+            next(httpError);
+        }
+    }),
+    
   createContact: async (req, res) => {
     try {
       const { body } = req;

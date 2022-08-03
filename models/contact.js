@@ -1,5 +1,5 @@
-'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Contact extends Model {
     /**
@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       message: {
+        allowNull: false,
         type: DataTypes.TEXT,
       },
     },
