@@ -1,57 +1,87 @@
-const createHttpError = require('http-errors');
-const { endpointResponse } = require('../helpers/success');
-const { catchAsync } = require('../helpers/catchAsync');
-const { createNews, getNewsByIdService, deleteNewsService } = require('../services/news');
+const {
+    createNews,
+    getNewsByIdService,
+    deleteNewsService,
+} = require("../services/news");
+const createHttpError = require("http-errors");
+const { endpointResponse } = require("../helpers/success");
+const { catchAsync } = require("../helpers/catchAsync");
+
+const { updateNewsService } = require("../services/news.js");
 
 module.exports = {
-  deleteNews: catchAsync(async (req, res, next) => {
-    try {
-      const { id } = req.params;
+    updateNews: catchAsync(async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const integerId = Number.isInteger(parseInt(id));
+            if (integerId) {
+                const updateNews = await updateNewsService(id, req.body);
+                endpointResponse({
+                    res,
+                    message: "News updated successfully",
+                });
+            } else {
+                res.status(412).send("id param has to be a integer");
+            }
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error updating news] - [news - PUT]: ${error.message}`
+            );
+            next(httpError);
+        }
+    }),
 
-      const deletedNews = await deleteNewsService(parseInt(id, 10));
-      endpointResponse({
-        res,
-        message: 'News deleted successfully',
-        body: deletedNews,
-      });
-    } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        error.message,
-      );
-      next(httpError);
-    }
-  }),
+    deleteNews: catchAsync(async (req, res, next) => {
+        try {
+            const { id } = req.params;
 
-  createNews: async (req, res) => {
-    try {
-      const { body } = req;
+            const deletedNews = await deleteNewsService(parseInt(id, 10));
+            endpointResponse({
+                res,
+                message: "News deleted successfully",
+                body: deletedNews,
+            });
+        } catch (error) {
+            const httpError = createHttpError(error.statusCode, error.message);
+            next(httpError);
+        }
+    }),
 
-      //Try to create a news
-      const news = await createNews(body);
+    createNews: async (req, res) => {
+        try {
+            const { body } = req;
 
-      //Server responses
-      return endpointResponse({
-        res,
-        message: 'News created',
-        body: news,
-      });
-    } catch (err) {
-      res.status(400).json({ status: 400, message: 'An error has occurred', error: err.message });
-    }
-  },
-  getNewsById: async (req, res) => {
-    const { id } = req.params;
-    const news = await getNewsByIdService(id);
+            //Try to create a news
+            const news = await createNews(body);
 
-    // Error
-    if (news !== null && news.error) { return res.status(400).send('an error has occurred'); }
+            //Server responses
+            return endpointResponse({
+                res,
+                message: "News created",
+                body: news,
+            });
+        } catch (err) {
+            res.status(400).json({
+                status: 400,
+                message: "An error has occurred",
+                error: err.message,
+            });
+        }
+    },
+    getNewsById: async (req, res) => {
+        const { id } = req.params;
+        const news = await getNewsByIdService(id);
 
-    // In case the news was not found
-    if (news === null) return res.status(404).send('news not found');
+        // Error
+        if (news !== null && news.error) {
+            return res.status(400).send("an error has occurred");
+        }
 
-    // Found news
-    return res.status(200).json(news);
-  },
+        // In case the news was not found
+        if (news === null) return res.status(404).send("news not found");
+
+        // Found news
+        return res.status(200).json(news);
+    },
 };
-
