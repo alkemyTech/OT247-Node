@@ -46,12 +46,10 @@ module.exports = {
         errorMessage: 'CategoryId must be a integer/number',
       },
       custom: {
-        options: (value) => {
-          return Category.findOne({ where: { id: value } }).then((category) => {
+        options: (value) => Category.findOne({ where: { id: value } }).then((category) => {
             if (!category) return Promise.reject();
             return Promise.resolve();
-          });
-        },
+          }),
         errorMessage: 'CategoryId not match with a category',
       },
     },
