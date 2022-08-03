@@ -4,9 +4,9 @@ const router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
+const newsRouter = require('./news');
 const authRouter = require('./auth');
 const userRouter = require('./users');
-const newsRouter = require('./news');
 
 const activitiesRouter = require('./activities');
 const testimonialsRouter = require('./testimonials');

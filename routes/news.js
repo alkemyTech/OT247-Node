@@ -1,17 +1,13 @@
 const express = require('express');
 
 const router = express.Router();
-const { createNews, getNewsById } = require('../controllers/news');
-
+const { createNews, getNewsById, deleteNews } = require('../controllers/news');
 const { isAdmin } = require('../middlewares/isAdmin');
 const { schemaValidator } = require('../middlewares/validator.js');
 const { newsCreate } = require('../schemas/news');
 
-//POST create news
-router.post('/', isAdmin, schemaValidator(newsCreate), createNews);
-
-// GET news by id
 router.get('/:id', isAdmin, getNewsById);
-
+router.post('/', isAdmin, schemaValidator(newsCreate), createNews);
+router.delete('/:id', isAdmin, deleteNews);
 
 module.exports = router;
