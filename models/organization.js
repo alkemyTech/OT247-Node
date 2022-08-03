@@ -4,7 +4,7 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class Organization extends Model {
-    static associate(models) {}
+    static associate() {}
   }
   Organization.init({
     id: {
@@ -39,6 +39,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     aboutUsText: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    facebookUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    linkedinUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    instagramUrl: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   }, {
