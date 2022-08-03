@@ -9,4 +9,12 @@ const deleteSlideById = async (id) => {
   }
 };
 
-module.exports = { deleteSlideById };
+const getSlideById = async (id) => {
+  try {
+    return await Slide.findOne({ where: { id } });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+module.exports = { getSlideById, deleteSlideById };

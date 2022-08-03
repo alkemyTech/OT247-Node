@@ -40,7 +40,8 @@ module.exports = {
       sendMail({
         email: body.email,
         subject: 'Welcome to the app',
-        data: req.user,
+        title: `Welcome ${body.firstName} ${body.lastName} to Alkemy ONG system`,
+        text: 'It´s a pleasure to us that you register in our system. Welcome to our ONG system here you will know all of our information about activities, members, organizations and roles of the  organization',
         templateId: welcomeMail(),
       });
 

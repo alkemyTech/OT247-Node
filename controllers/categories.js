@@ -67,4 +67,19 @@ module.exports = {
       res.status(500).json({ msg: err });
     }
   },
+  getCategoryAsAdmin: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      //Try to get a category
+      const gottenCategory = await categoryService.getCategoryAsAdmin(id);
+
+      //Server responses
+      !gottenCategory
+        ? res.status(404).json({ status: 404, message: 'Category not found' })
+        : res.status(200).json({ status: 200, message: 'Category found', data: gottenCategory });
+    } catch (err) {
+      res.status(400).json({ status: 400, error: 'An error has occurred' });
+    }
+  },
 };
