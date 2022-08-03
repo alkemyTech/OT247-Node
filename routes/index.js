@@ -9,6 +9,7 @@ const authRouter = require('./auth');
 const userRouter = require('./users');
 
 const activitiesRouter = require('./activities');
+const slidesRouter = require('./slides');
 const testimonialsRouter = require('./testimonials');
 
 /* GET home page. */
@@ -37,6 +38,8 @@ router.use('/activities', activitiesRouter);
 
 // News
 router.use('/news', newsRouter);
+
+router.use('/slides', slidesRouter);
 
 // Testimonials
 router.use('/testimonials', testimonialsRouter);
