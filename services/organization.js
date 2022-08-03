@@ -3,7 +3,7 @@ const { Organization } = require('../models');
 const getPublicOrgService = async (id) => {
   try {
     return await Organization.findOne({
-      attributes: ['name', 'image', 'phone', 'address'],
+      attributes: ['name', 'image', 'phone', 'address', 'facebookUrl', 'instagramUrl', 'linkedinUrl'],
       where: { id },
     });
   } catch (err) {
@@ -22,6 +22,9 @@ const updateOrganization = async (id, body) => {
         email: body.email,
         welcomeText: body.welcomeText,
         aboutUsText: body.aboutUsText,
+        facebookUrl: body.facebookUrl,
+        instagramUrl: body.instagramUrl,
+        linkedinUrl: body.linkedinUrl,
       },
       { where: { id } },
     );

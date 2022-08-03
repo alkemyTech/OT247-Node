@@ -1,5 +1,16 @@
 const { News } = require('../models');
-const ErrorObject = require('../helpers/error');
+const { existNews } = require('../helpers/existNews');
+const { ErrorObject } = require('../helpers/error');
+
+const deleteNewsService = async (id) => {
+  try {
+    const news = await existNews(id);
+    if (!news) throw new ErrorObject('News not found', 404);
+    return await News.destroy({ where: { id } });
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
 
 const createNews = async (body) => {
   try {
@@ -23,7 +34,26 @@ const getNewsByIdService = async (id) => {
   }
 };
 
+const updateNewsService = async (id, body) => {
+  try {
+    const updateNews = await News.update(
+      {
+        name: body.name,
+        content: body.content,
+        image: body.image,
+        categoryId: body.categoryId
+      },
+      { where: { id } }
+    );
+    return updateNews;
+  } catch (error) {
+    throw new ErrorObject(404, 'News not found');
+  };
+};
+
 module.exports = {
   createNews,
+  deleteNewsService,
+  updateNewsService,
   getNewsByIdService,
 };

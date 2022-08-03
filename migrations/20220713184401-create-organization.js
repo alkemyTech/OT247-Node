@@ -35,6 +35,18 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      facebookUrl: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      linkedinUrl: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      instagramUrl: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -49,7 +61,7 @@ module.exports = {
       },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('organizations');
   },
 };
