@@ -22,6 +22,9 @@ const updateOrganization = async (id, body) => {
         email: body.email,
         welcomeText: body.welcomeText,
         aboutUsText: body.aboutUsText,
+        facebookUrl: body.facebookUrl,
+        instagramUrl: body.instagramUrl,
+        linkedinUrl: body.linkedinUrl,
       },
       { where: { id } },
     );
