@@ -9,6 +9,7 @@ const authRouter = require('./auth');
 const userRouter = require('./users');
 
 const activitiesRouter = require('./activities');
+const membersRouter = require('./members');
 const contactsRouter = require('./contacts');
 const slidesRouter = require('./slides');
 const testimonialsRouter = require('./testimonials');
@@ -39,6 +40,10 @@ router.use('/activities', activitiesRouter);
 
 // News
 router.use('/news', newsRouter);
+
+
+// Members
+router.use('/members', membersRouter);
 
 // Contacts
 router.use('/contacts', contactsRouter);
