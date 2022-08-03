@@ -1,5 +1,4 @@
 const { News } = require('../models');
-const { ErrorObject } = require('../helpers/error')
 
 const existNews = async(req, res, next) => {
   try{

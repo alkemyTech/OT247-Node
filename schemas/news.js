@@ -1,38 +1,57 @@
-exports.news = {
-  name: {
-    exists: {
-      errorMessage: 'News name is required',
+const { Category } = require('../models');
+
+module.exports = {
+  newsCreate: {
+    name: {
+      exists: {
+        errorMessage: 'Name is required',
+      },
+      notEmpty: {
+        errorMessage: 'Name must not be empty',
+      },
+      isString: {
+        errorMessage: 'Name must be a string',
+      },
     },
-    notEmpty: {
-      errorMessage: 'Name is empty',
+    content: {
+      exists: {
+        errorMessage: 'Content is required',
+      },
+      notEmpty: {
+        errorMessage: 'Content must not be empty',
+      },
+      isString: {
+        errorMessage: 'Content must be a string',
+      },
     },
-    isString: { errorMessage: 'News name should be a string' },
+    image: {
+      exists: {
+        errorMessage: 'Image is required',
+      },
+      notEmpty: {
+        errorMessage: 'Image must not be empty',
+      },
+      isString: {
+        errorMessage: 'Image must be a string',
+      },
+    },
+    categoryId: {
+      exists: {
+        errorMessage: 'CategoryId is required',
+      },
+      notEmpty: {
+        errorMessage: 'CategoryId must not be empty',
+      },
+      isInt: {
+        errorMessage: 'CategoryId must be a integer/number',
+      },
+      custom: {
+        options: (value) => Category.findOne({ where: { id: value } }).then((category) => {
+            if (!category) return Promise.reject();
+            return Promise.resolve();
+          }),
+        errorMessage: 'CategoryId not match with a category',
+      },
+    },
   },
-  content: {
-    exists: {
-      errorMessage: 'News content is required',
-    },
-    notEmpty: {
-      errorMessage: 'Content is empty',
-    },
-    isString: { errorMessage: 'News content should be a string' },
-  },
-  image: {
-    exists: {
-      errorMessage: 'News image is required',
-    },
-    notEmpty: {
-      errorMessage: 'Image is empty',
-    },
-    isString: { errorMessage: 'News image should be a string' },
-  },
-  categoryId: {
-    exists: {
-      errorMessage: 'News categoryId is required',
-    },
-    notEmpty: {
-      errorMessage: 'categoryID is empty',
-    },
-    isInt: { errorMessage: 'News categoryId should be a integer' },
-  }
-}
+};
