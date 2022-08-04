@@ -1,55 +1,65 @@
-const { Testimonial } = require('../models');
-const { ErrorObject } = require('../helpers/error');
-const { existTestimonial } = require('../helpers/existTestimonial');
-
-const createTestimonialsService = async (body) => {
-  try {
-    const createTestimonial = await Testimonial.create(
-      {
-        name: body.name,
-        image: body.image,
-        content: body.content,
-      },
-    );
-    return createTestimonial;
-  } catch (error) {
-    throw new ErrorObject(404, 'News not found');
-  }
-};
-
-const updateTestimonialService = async (id, body) => {
-  try {
-    const testimonial = await Testimonial.findOne({
-      where: { id },
-    });
-    if (!testimonial) {
-      throw new ErrorObject('Testimonial not found', 404);
-    }
-    await Testimonial.update({
-      name: body.name,
-      image: body.image,
-      content: body.content,
-    }, {
-      where: { id },
-    });
-    return testimonial;
-  } catch (error) {
-    throw new ErrorObject(error.message, error.statusCode || 500);
-  }
-};
-
-const deleteTestimonialService = async (id) => {
-  try {
-    const testimonial = await existTestimonial(id);
-    if (!testimonial) throw new ErrorObject('Testimonial not found', 404);
-    return await Testimonial.destroy({ where: { id } });
-  } catch (error) {
-    throw new ErrorObject(error.message, error.statusCode || 500);
-  }
-};
+const createHttpError = require('http-errors');
+const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
+const { createTestimonialsService, updateTestimonialService, deleteTestimonialService } = require('../services/testimonial');
 
 module.exports = {
-  createTestimonialsService,
-  updateTestimonialService,
-  deleteTestimonialService,
+  createTestimonial: catchAsync(async (req, res, next) => {
+    try {
+      const { name, image, content } = req.body;
+
+      const newTestimonial = { name, image, content };
+      const createdTestimonial = await createTestimonialsService(newTestimonial);
+
+      endpointResponse({
+        res,
+        message: 'Testimonial created successfully',
+        body: createdTestimonial,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error updating activity] - [activities - PUT]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+  updateTestimonial: catchAsync(async (req, res, next) => {
+    try {
+      const { body } = req;
+      const { id } = req.params;
+
+      const testimonial = await updateTestimonialService(id, body);
+      endpointResponse({
+        code: 200,
+        res,
+        body: testimonial,
+        message: 'Testimonial successfully updated',
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error updating activity] - [activities - PUT]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+  deleteTestimonial: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const deletedTestimonial = await deleteTestimonialService(parseInt(id, 10));
+      endpointResponse({
+        res,
+        message: 'Testimonial deleted successfully',
+        body: deletedTestimonial,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        error.message,
+      );
+      next(httpError);
+    }
+  }),
 };
