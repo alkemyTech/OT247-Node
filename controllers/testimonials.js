@@ -1,15 +1,25 @@
-const { ErrorObject } = require('../helpers/error');
-const { Testimonial } = require('../models');
-const { existTestimonial } = require('../helpers/existTestimonial');
+const createHttpError = require('http-errors');
+const { endpointResponse } = require('../helpers/success');
 
-const deleteTestimonialService = async (id) => {
-  try {
-    const testimonial = await existTestimonial(id);
-    if (!testimonial) throw new ErrorObject('Testimonial not found', 404);
-    return await Testimonial.destroy({ where: { id } });
-  } catch (error) {
-    throw new ErrorObject(error.message, error.statusCode || 500);
-  }
+const { deleteTestimonialService } = require('../services/testimonial');
+
+module.exports = {
+  deleteTestimonial: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const deletedTestimonial = await deleteTestimonialService(parseInt(id, 10));
+      endpointResponse({
+        res,
+        message: 'Testimonial deleted successfully',
+        body: deletedTestimonial,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        error.message,
+      );
+      next(httpError);
+    }
+  },
 };
-
-module.exports = { deleteTestimonialService };
