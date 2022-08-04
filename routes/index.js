@@ -4,14 +4,15 @@ const router = express.Router();
 
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
-const activitiesRouter = require('./activities');
 const newsRouter = require('./news');
 const authRouter = require('./auth');
 const userRouter = require('./users');
-const membersRouter = require('./members');
+const activitiesRouter = require('./activities');
 const contactsRouter = require('./contacts');
 const slidesRouter = require('./slides');
 const testimonialsRouter = require('./testimonials');
+const membersRouter = require('./members');
+const backofficeRouter = require('./backoffice');
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -31,9 +32,6 @@ router.use('/categories', categoriesRouter);
 // Organizations
 router.use('/organizations', organizationsRouter);
 
-// Activities
-router.use('/activities', activitiesRouter);
-
 // Users
 router.use('/users', userRouter);
 
@@ -43,14 +41,17 @@ router.use('/activities', activitiesRouter);
 // News
 router.use('/news', newsRouter);
 
-// Members
-router.use('/members', membersRouter);
-
 // Contacts
 router.use('/contacts', contactsRouter);
 router.use('/slides', slidesRouter);
 
 // Testimonials
 router.use('/testimonials', testimonialsRouter);
+
+// Members
+router.use('/members', membersRouter);
+
+// BackOffice
+router.use('/backoffice', backofficeRouter);
 
 module.exports = router;
