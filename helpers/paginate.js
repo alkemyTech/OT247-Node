@@ -1,6 +1,6 @@
-const paginate = async (query, model) => {
+const paginate = async (query, path, model) => {
   const { page = 1 } = query;
-  const url = 'http://localhost:3000/members?';
+  const url = `http://localhost:3000/${path}?`;
   const limit = 10;
   const offset = (page - 1) * limit;
 
@@ -16,13 +16,13 @@ const paginate = async (query, model) => {
     ? 'no next page'
     : `${url}page=${Number(page) + 1}`;
 
-  const members = {
+  const pagination = {
     previusPage,
     nextPage,
     data: rows,
   };
 
-  return members;
+  return pagination;
 };
 
 module.exports = paginate;
