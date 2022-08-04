@@ -24,7 +24,7 @@ module.exports = {
       next(httpError);
     }
   }),
-  activitiesRegister: catchAsync(async (req, res, next) => {
+  insertActivity: catchAsync(async (req, res, next) => {
     try {
       const { body } = req
 
