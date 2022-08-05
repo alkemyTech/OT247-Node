@@ -30,4 +30,24 @@ const getSlideById = async (id) => {
   }
 };
 
-module.exports = { getSlideById, getSlidesService, deleteSlideById };
+const updateSlideById = async (params, body) => {
+  try {
+    const { id } = params;
+    const {
+      imageUrl, text, order, organizationId,
+    } = body;
+
+    return await Slide.update({
+      imageUrl,
+      text,
+      order,
+      organizationId,
+    }, { where: { id } });
+  } catch (err) {
+    throw new ErrorObject(err.message, 400, err);
+  }
+};
+
+module.exports = {
+  getSlideById, getSlidesService, deleteSlideById, updateSlideById,
+};
