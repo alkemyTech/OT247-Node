@@ -1,14 +1,15 @@
 const express = require('express');
+const controller = require('../controllers/testimonials');
+const schema = require('../schemas/testimonial');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
 
 const router = express.Router();
 
-const { isAdmin } = require('../middlewares/isAdmin');
-const { verify } = require('../middlewares/verifyToken');
-const { createTestimonial, updateTestimonial } = require('../controllers/testimonials');
-const { schemaValidator } = require('../middlewares/validator');
-const { testimonial } = require('../schemas/testimonial');
+router
+  .use(isAdmin)
+  .post('/', schemaValidator(schema.testimonial), controller.createTestimonial)
 
-router.post('/', verify, isAdmin, schemaValidator(testimonial), createTestimonial);
-router.put('/:id', verify, isAdmin, schemaValidator(testimonial), updateTestimonial);
+  .put('/:id', schemaValidator(schema.testimonial), controller.updateTestimonial);
 
 module.exports = router;

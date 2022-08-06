@@ -1,10 +1,11 @@
 const express = require('express');
+const controller = require('../controllers/backoffice');
+const { isAdmin } = require('../middlewares/isAdmin');
 
 const router = express.Router();
 
-const { getContactsBO } = require('../controllers/backoffice');
-const { isAdmin } = require('../middlewares/isAdmin');
-
-router.get('/contacts', isAdmin, getContactsBO);
+router
+  .use(isAdmin)
+  .get('/contacts', controller.getContactsBO);
 
 module.exports = router;

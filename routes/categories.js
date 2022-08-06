@@ -1,20 +1,20 @@
 const express = require('express');
+const controller = require('../controllers/categories');
+const schema = require('../schemas/category');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
+const { categoryExists } = require('../middlewares/categoryExists');
 
 const router = express.Router();
 
-const { isAdmin } = require('../middlewares/isAdmin');
-const { verify } = require('../middlewares/verifyToken');
-
-const categoryCtrl = require('../controllers/categories');
-const { schemaValidator } = require('../middlewares/validator');
-const { category } = require('../schemas/category');
-const { categoryExists } = require('../middlewares/categoryExists');
-
 router
-  .get('/', isAdmin, categoryCtrl.getCategoriesNames)
-  .post('/', verify, isAdmin, schemaValidator(category), categoryCtrl.createCategory)
-  .get('/:id', isAdmin, categoryCtrl.getCategoryAsAdmin)
-  .put('/:id', isAdmin, schemaValidator(category), categoryCtrl.updateCategoryById)
-  .delete('/:id', isAdmin, categoryExists, categoryCtrl.deleteCategoryById)
+  .use(isAdmin)
+
+  .get('/', controller.getCategoriesNames)
+  .post('/', schemaValidator(schema.category), controller.createCategory)
+
+  .get('/:id', controller.getCategoryAsAdmin)
+  .put('/:id', schemaValidator(schema.category), controller.updateCategoryById)
+  .delete('/:id', categoryExists, controller.deleteCategoryById);
 
 module.exports = router;

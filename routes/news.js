@@ -1,20 +1,18 @@
 const express = require('express');
+const controller = require('../controllers/news');
+const schema = require('../schemas/news');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
+const { existNews } = require('../helpers/existNews');
 
 const router = express.Router();
-const {
-  createNews, updateNews, getNewsById, deleteNews,
-} = require('../controllers/news');
-const { isAdmin } = require('../middlewares/isAdmin');
-const { schemaValidator } = require('../middlewares/validator.js');
-const { existNews } = require('../helpers/existNews');
-const { newsCreate } = require('../schemas/news');
 
-// Este esquema no existe, deberia crearse
-// const { news } = require('../schemas/news');
+router
+  .use(isAdmin)
+  .post('/', schemaValidator(schema.newsCreate), controller.createNews)
 
-router.get('/:id', isAdmin, getNewsById);
-router.put('/:id', isAdmin, existNews, updateNews);
-router.post('/', isAdmin, schemaValidator(newsCreate), createNews);
-router.delete('/:id', isAdmin, deleteNews);
+  .get('/:id', controller.getNewsById)
+  .put('/:id', existNews, controller.updateNews)
+  .delete('/:id', controller.deleteNews);
 
 module.exports = router;

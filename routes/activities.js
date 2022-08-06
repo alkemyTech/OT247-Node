@@ -1,13 +1,13 @@
 const express = require('express');
+const controller = require('../controllers/activities');
+const schema = require('../schemas/activity');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
 
 const router = express.Router();
 
-const { isAdmin } = require('../middlewares/isAdmin');
-const { schemaValidator } = require('../middlewares/validator');
-const { activity } = require('../schemas/activity');
-
-const { updateActivity } = require('../controllers/activities');
-
-router.put('/:id', isAdmin, schemaValidator(activity), updateActivity);
+router
+  .use(isAdmin)
+  .put('/:id', schemaValidator(schema.activity), controller.updateActivity);
 
 module.exports = router;
