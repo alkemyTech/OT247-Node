@@ -1,8 +1,8 @@
+const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { ErrorObject } = require('../helpers/error');
 const { catchAsync } = require('../helpers/catchAsync');
 const { deleteMemberByIdService } = require('../services/member');
-const createHttpError = require('http-errors');
 const memberService = require('../services/member');
 const { getMembersService } = require('../services/members');
 
@@ -10,7 +10,9 @@ module.exports = {
 
   getMembers: catchAsync(async (req, res) => {
     try {
-      const members = await getMembersService();
+      const { query } = req;
+      const members = await getMembersService(query);
+
       endpointResponse({
         res,
         message: 'Members loaded successfully',
@@ -22,7 +24,7 @@ module.exports = {
         `[Error loading members] - [members - GET]: ${error.message}`,
       );
       next(httpError);
-    };
+    }
   }),
 
   createMember: async (req, res) => {
