@@ -13,6 +13,7 @@ const memberSchema = require('../schemas/member');
 
 router.get('/', verify, isAdmin, getMembers);
 router.post('/', schemaValidator(memberSchema.createMember), memberCtrl.createMember);
+router.put('/:id', verify, memberExists, schemaValidator(memberSchema.updateMember), memberCtrl.updateMember);
 router.delete('/:id', verify, isAdmin, memberExists, deleteMemberById);
 
 module.exports = router;

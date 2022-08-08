@@ -1,8 +1,15 @@
 const { Activities } = require('../models');
-
 const { ErrorObject } = require('../helpers/error');
-
 const existActivity = require('../helpers/existActivity');
+
+const insertActivity = async (body) => {
+    try{   	
+      const activities = await Activities.create(body)
+      return activities
+    }catch(err){
+        return { error: err };
+    };
+};
 
 const updateActivityById = async (id, body) => {
   try {
@@ -20,4 +27,4 @@ const updateActivityById = async (id, body) => {
   }
 };
 
-module.exports = { updateActivityById };
+module.exports = { updateActivityById, insertActivity };

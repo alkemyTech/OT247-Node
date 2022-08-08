@@ -1,12 +1,22 @@
+const { faker } = require('@faker-js/faker');
+
+let data = [];
+let amount = 30;
+let date = new Date();
+
+for (let i = 0; i < amount; i++) {
+  data.push({
+    name: faker.lorem.sentence(),
+    image: faker.image.nature(),
+    content: faker.lorem.paragraph(),
+    createdAt: date,
+    updatedAt: date,
+  });
+}
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Testimonials', [{
-      name: 'tesimonial 1',
-      image: 'https://i.pinimg.com/originals/05/51/f5/0551f506725ac1deeaa85d46f8b9a5fd.jpg',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex euismod, euismod nisi eu, consectetur nisi.',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }], {});
+    await queryInterface.bulkInsert('Testimonials', data, {});
   },
 
   async down(queryInterface, Sequelize) {

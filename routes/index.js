@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerSetup = require('../docs/swagger');
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
 const newsRouter = require('./news');
@@ -13,11 +15,15 @@ const slidesRouter = require('./slides');
 const testimonialsRouter = require('./testimonials');
 const membersRouter = require('./members');
 const backofficeRouter = require('./backoffice');
+const commentRouter = require('./comment');
 
 /* GET home page. */
 router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
+
+// Swagger Documentation
+router.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup));
 
 // Auth
 router.use('/auth', authRouter);
@@ -53,5 +59,7 @@ router.use('/members', membersRouter);
 
 // BackOffice
 router.use('/backoffice', backofficeRouter);
+
+router.use('/comments', commentRouter);
 
 module.exports = router;

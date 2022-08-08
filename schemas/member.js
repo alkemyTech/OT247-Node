@@ -23,4 +23,23 @@ module.exports = {
       },
     },
   },
+  updateMember: {
+    emptyFields: {
+      custom: {
+        options: (value, { req }) => {
+          const {
+            name,
+            description,
+            image,
+            facebookUrl,
+            instagramUrl,
+            linkedinUrl,
+          } = req.body;
+
+          return name || description || image || facebookUrl || instagramUrl || linkedinUrl;
+        },
+      },
+      errorMessage: 'No valid field sent, nothing to update.',
+    },
+  },
 };
