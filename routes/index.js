@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerSetup = require('../docs/swagger');
 const categoriesRouter = require('./categories');
 const organizationsRouter = require('./organizations');
 const newsRouter = require('./news');
@@ -18,6 +20,9 @@ const backofficeRouter = require('./backoffice');
 router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
+
+// Swagger Documentation
+router.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup));
 
 // Auth
 router.use('/auth', authRouter);
