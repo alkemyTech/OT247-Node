@@ -1,6 +1,15 @@
 const { Testimonial } = require('../models');
 const { ErrorObject } = require('../helpers/error');
 const { existTestimonial } = require('../helpers/existTestimonial');
+const { paginate } = require('../helpers/paginate');
+
+const getTestimonialsService = async (page) => {
+  try {
+    return await paginate(page, 'testimonials', Testimonial);
+  } catch (err) {
+    throw new ErrorObject('Testimonials not found', 404);
+  }
+};
 
 const createTestimonialsService = async (body) => {
   try {
@@ -13,7 +22,7 @@ const createTestimonialsService = async (body) => {
     );
     return createTestimonial;
   } catch (error) {
-    throw new ErrorObject(404, 'News not found');
+    throw new ErrorObject(404, 'Testimonial not found');
   }
 };
 
@@ -49,6 +58,7 @@ const deleteTestimonialService = async (id) => {
 };
 
 module.exports = {
+  getTestimonialsService,
   createTestimonialsService,
   updateTestimonialService,
   deleteTestimonialService,
