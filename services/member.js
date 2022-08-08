@@ -28,4 +28,23 @@ const createMember = async (body) => {
   }
 };
 
-module.exports = { createMember, deleteMemberByIdService };
+const updateMember = async (id, body) => {
+  try {
+    const {
+      name, description, image, facebookUrl, instagramUrl, linkedinUrl,
+    } = body;
+
+    return await Member.update({
+      name,
+      description,
+      image,
+      facebookUrl,
+      instagramUrl,
+      linkedinUrl,
+    }, { where: { id } });
+  } catch (err) {
+    throw new ErrorObject(err.message, 400, err);
+  }
+};
+
+module.exports = { createMember, deleteMemberByIdService, updateMember };

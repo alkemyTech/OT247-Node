@@ -10,4 +10,15 @@ const createNewComment = async (body) => {
   }
 };
 
-module.exports = { createNewComment };
+const deleteCommentById = async (id) => {
+  try {
+    return await Comment.destroy({ where: { id } });
+  } catch (err) {
+    throw new ErrorObject(err.message, 400, err);
+  }
+};
+
+module.exports = {
+  createNewComment,
+  deleteCommentById,
+};
