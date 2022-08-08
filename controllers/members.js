@@ -22,7 +22,7 @@ module.exports = {
         `[Error loading members] - [members - GET]: ${error.message}`,
       );
       next(httpError);
-    };
+    }
   }),
 
   createMember: async (req, res) => {
@@ -42,6 +42,23 @@ module.exports = {
       return res.json(error);
     }
   },
+
+  updateMember: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { body } = req;
+
+      await memberService.updateMember(id, body);
+
+      return endpointResponse({
+        res,
+        message: 'Member updated successfully',
+      });
+    } catch (err) {
+      const error = new ErrorObject(err.message, err.statusCode || 400, err.errors || err.stack);
+      return next(error);
+    }
+  }),
 
   deleteMemberById: catchAsync(async (req, res) => {
     try {
