@@ -1,13 +1,13 @@
+const createHttpError = require('http-errors');
 const {
   createNews,
   getNewsByIdService,
   deleteNewsService,
-} = require("../services/news");
-const createHttpError = require("http-errors");
-const { endpointResponse } = require("../helpers/success");
-const { catchAsync } = require("../helpers/catchAsync");
+} = require('../services/news');
+const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
 
-const { updateNewsService } = require("../services/news.js");
+const { updateNewsService } = require('../services/news');
 
 module.exports = {
   updateNews: catchAsync(async (req, res, next) => {
@@ -18,15 +18,15 @@ module.exports = {
         const updateNews = await updateNewsService(id, req.body);
         endpointResponse({
           res,
-          message: "News updated successfully",
+          message: 'News updated successfully',
         });
       } else {
-        res.status(412).send("id param has to be a integer");
+        res.status(412).send('id param has to be a integer');
       }
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-        `[Error updating news] - [news - PUT]: ${error.message}`
+        `[Error updating news] - [news - PUT]: ${error.message}`,
       );
       next(httpError);
     }
@@ -39,7 +39,7 @@ module.exports = {
       const deletedNews = await deleteNewsService(parseInt(id, 10));
       endpointResponse({
         res,
-        message: "News deleted successfully",
+        message: 'News deleted successfully',
         body: deletedNews,
       });
     } catch (error) {
