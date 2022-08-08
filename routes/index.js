@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const categoriesRouter = require('./categories');
+const commentsRouter = require('./comments');
 const organizationsRouter = require('./organizations');
 const newsRouter = require('./news');
 const authRouter = require('./auth');
@@ -28,6 +29,9 @@ router.get('/login', (req, res) => {
 });
 
 router.use('/categories', categoriesRouter);
+
+// Comments
+router.use('/comments', commentsRouter);
 
 // Organizations
 router.use('/organizations', organizationsRouter);
