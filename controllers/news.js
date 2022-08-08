@@ -13,9 +13,9 @@ module.exports = {
   updateNews: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const integerId = Number.isInteger(parseInt(id));
+      const integerId = Number.isInteger(parseInt(id, 10));
       if (integerId) {
-        const updateNews = await updateNewsService(id, req.body);
+        await updateNewsService(id, req.body);
         endpointResponse({
           res,
           message: 'News updated successfully',
