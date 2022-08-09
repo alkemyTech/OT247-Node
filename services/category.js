@@ -3,8 +3,9 @@ const { ErrorObject } = require('../helpers/error');
 const existCategory = require('../helpers/existCategory');
 const { paginate } = require('../helpers/paginate');
 
-const getCategoriesNames = async (query, attributes) => {
+const getCategoriesNames = async (query) => {
   try {
+    const attributes = ['name'];
     return await paginate(query, 'categories', Category, attributes);
   } catch (err) {
     throw new ErrorObject(404, 'Categories not found');

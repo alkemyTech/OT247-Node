@@ -10,9 +10,7 @@ module.exports = {
   getCategoriesNames: catchAsync(async (req, res, next) => {
     try {
       const page = req.query;
-      const attributes = ['name'];
-
-      const categories = await categoryService.getCategoriesNames(page, attributes);
+      const categories = await categoryService.getCategoriesNames(page);
 
       endpointResponse({
         res,
