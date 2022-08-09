@@ -1,4 +1,5 @@
 const { News } = require('../models');
+const { ErrorObject } = require('./error');
 
 const existNews = async (req, res, next) => {
   try {
@@ -7,9 +8,9 @@ const existNews = async (req, res, next) => {
 
     if (!news) return res.status(404).json({ msg: 'This news does not exist' });
 
-    next();
+    return next();
   } catch (err) {
-    console.log(err);
+    throw new ErrorObject(404, 'News not found');
   }
 };
 

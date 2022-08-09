@@ -1,4 +1,5 @@
 const { Contact } = require('../models');
+const { ErrorObject } = require('./error');
 
 const getContactsForBO = async () => {
   try {
