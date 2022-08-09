@@ -19,7 +19,7 @@ exports.user = {
   },
   isAuthorized: {
     custom: {
-      options: (value, { req, location, path }) => {
+      options: (value, { req }) => {
         const { id } = req.params;
         const { userId } = req.user;
         return Number(id) === userId;
@@ -29,7 +29,7 @@ exports.user = {
   },
   emptyFields: {
     custom: {
-      options: (value, { req, location, path }) => {
+      options: (value, { req }) => {
         const { firstName, lastName, photo } = req.body;
         return firstName || lastName || photo;
       },
