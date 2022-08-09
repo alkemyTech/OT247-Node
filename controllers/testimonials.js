@@ -1,9 +1,25 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const { createTestimonialsService, updateTestimonialService } = require('../services/testimonial');
+const { getTestimonialsService, createTestimonialsService, updateTestimonialService, deleteTestimonialService } = require('../services/testimonial');
 
 module.exports = {
+  getTestimonials: catchAsync(async (req, res, next) => {
+    try {
+      const page = req.query;
+      const testimonials = await getTestimonialsService(page);
+      if (!testimonials) return res.status(404).json(endpointResponse(false, 'Testimonials not found'));
+
+      return res.status(200).json(testimonials);
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error listing testimonials] - [testimonials - GET]: ${error.message}`,
+      );
+      return next(httpError);
+    }
+  }),
+
   createTestimonial: catchAsync(async (req, res, next) => {
     try {
       const { name, image, content } = req.body;
@@ -44,5 +60,22 @@ module.exports = {
       next(httpError);
     }
   }),
+  deleteTestimonial: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
 
+      const deletedTestimonial = await deleteTestimonialService(parseInt(id, 10));
+      endpointResponse({
+        res,
+        message: 'Testimonial deleted successfully',
+        body: deletedTestimonial,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        error.message,
+      );
+      next(httpError);
+    }
+  }),
 };
