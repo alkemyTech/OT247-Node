@@ -11,11 +11,11 @@ fs
     && (file !== basename))
   .forEach((file) => {
     const pathSwagger = require(path.join(__dirname, file));
-    const pathKeys = Object.keys(pathSwagger.paths);
-    const pathValues = Object.values(pathSwagger.paths);
+    const pathKeys = Object.keys(pathSwagger.path);
+    const pathValues = Object.values(pathSwagger.path);
     let i;
     for (i = 0; i < pathKeys.length; i += 1) {
       paths[pathKeys[i].toString()] = pathValues[i];
     }
   });
-module.exports = paths;
+module.exports = paths; 
