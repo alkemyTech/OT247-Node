@@ -1,4 +1,3 @@
-const { decryptJWT } = require('../helpers/jwt');
 const { ErrorObject } = require('../helpers/error');
 
 const ownership = async (req, res, next) => {
