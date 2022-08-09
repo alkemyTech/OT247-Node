@@ -26,20 +26,20 @@ module.exports = {
   }),
   insertActivity: catchAsync(async (req, res, next) => {
     try {
-      const { body } = req
+      const { body } = req;
 
-      const activity = await insertActivity(body)
+      const activity = await insertActivity(body);
       endpointResponse({
         res,
         message: 'Activity created successfully',
         body: activity,
-      }) 
+      });
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
         `[Error creating activity] - [activities - POST]: ${error.message}`,
       );
-      next(httpError) 
+      next(httpError);
     }
   }),
 };

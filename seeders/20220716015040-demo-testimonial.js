@@ -1,8 +1,8 @@
 const { faker } = require('@faker-js/faker');
 
-let data = [];
-let amount = 30;
-let date = new Date();
+const data = [];
+const amount = 30;
+const date = new Date();
 
 for (let i = 0; i < amount; i++) {
   data.push({
