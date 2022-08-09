@@ -19,4 +19,4 @@ fs
       paths[pathKeys[i].toString()] = pathValues[i];
     }
   });
-module.exports = paths;
+module.exports = paths; 
