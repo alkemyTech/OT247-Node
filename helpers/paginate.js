@@ -25,4 +25,4 @@ const paginate = async (query, path, model) => {
   return pagination;
 };
 
-module.exports = paginate;
+module.exports = { paginate };

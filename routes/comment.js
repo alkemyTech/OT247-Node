@@ -11,4 +11,6 @@ const { existComment } = require('../helpers/existComment');
 
 router.put('/:id', verify, isAuthorized, existComment, schemaValidator(comment), commentCtrl.updateCommentById);
 
+router.delete('/:id', verify, isAuthorized, commentCtrl.deleteCommentById);
+
 module.exports = router;

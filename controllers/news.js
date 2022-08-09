@@ -1,15 +1,75 @@
 const createHttpError = require('http-errors');
-const {
-  createNews,
-  getNewsByIdService,
-  deleteNewsService,
-} = require('../services/news');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 
-const { updateNewsService } = require('../services/news');
+const {
+  getNewsService,
+  getNewsByIdService,
+  createNews,
+  updateNewsService,
+  deleteNewsService,
+} = require('../services/news');
 
 module.exports = {
+  getNews: catchAsync(async (req, res, next) => {
+    try {
+      const page = req.query;
+
+      const news = await getNewsService(page);
+
+      if (!news) return res.status(404).send('news not found');
+      if (news.error) return res.status(400).send('an error has occurred');
+
+      return res.status(200).json(news);
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error listing news] - [news - GET]: ${error.message}`,
+      );
+      return next(httpError);
+    }
+  }),
+  
+  getNewsById: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const news = await getNewsByIdService(id);
+
+      if (!news) return res.status(404).send('news not found');
+      if (news.error) return res.status(400).send('an error has occurred');
+
+      return res.status(200).json(news);
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error searching news] - [news - GET]: ${error.message}`,
+      );
+      return next(httpError);
+    }
+  }),
+
+  createNews: catchAsync(async (req, res, next) => {
+    try {
+      const { body } = req;
+
+      // Try to create a news
+      const news = await createNews(body);
+
+      // Server responses
+      endpointResponse({
+        res,
+        message: 'News created',
+        body: news,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error creating news] - [news - POST]: ${error.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
   updateNews: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -31,7 +91,7 @@ module.exports = {
       next(httpError);
     }
   }),
-
+  
   deleteNews: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -43,39 +103,12 @@ module.exports = {
         body: deletedNews,
       });
     } catch (error) {
-      const httpError = createHttpError(error.statusCode, error.message);
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error deleting news] - [news - DELETE]: ${error.message}`,
+      );
       next(httpError);
     }
   }),
 
-  createNews: async (req, res) => {
-    try {
-      const { body } = req;
-      const news = await createNews(body);
-
-      return endpointResponse({
-        res,
-        message: 'News created',
-        body: news,
-      });
-    } catch (err) {
-      res.status(400).json({
-        status: 400,
-        message: 'An error has occurred',
-        error: err.message,
-      });
-    }
-  },
-  getNewsById: async (req, res) => {
-    const { id } = req.params;
-    const news = await getNewsByIdService(id);
-
-    if (news !== null && news.error) {
-      return res.status(400).send('an error has occurred');
-    }
-
-    if (news === null) return res.status(404).send('news not found');
-
-    return res.status(200).json(news);
-  },
 };
