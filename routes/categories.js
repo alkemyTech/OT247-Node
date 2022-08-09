@@ -15,6 +15,6 @@ router
   .post('/', verify, isAdmin, schemaValidator(category), categoryCtrl.createCategory)
   .get('/:id', isAdmin, categoryCtrl.getCategoryAsAdmin)
   .put('/:id', isAdmin, schemaValidator(category), categoryCtrl.updateCategoryById)
-  .delete('/:id', isAdmin, categoryExists, categoryCtrl.deleteCategoryById);
+  .delete('/:id', isAdmin, categoryExists, categoryCtrl.deleteCategoryById)
 
 module.exports = router;
