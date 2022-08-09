@@ -4,7 +4,7 @@ const data = [];
 const amount = 30;
 const date = new Date();
 
-for (let i = 0; i < amount; i++) {
+for (let i = 0; i < amount; i += 1) {
   data.push({
     name: faker.lorem.sentence(),
     image: faker.image.nature(),
@@ -15,11 +15,11 @@ for (let i = 0; i < amount; i++) {
 }
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('Testimonials', data, {});
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('Testimonials', null, {});
   },
 };
