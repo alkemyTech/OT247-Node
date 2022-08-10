@@ -1,4 +1,3 @@
-// Authorization: Bearer 'token'
 const getToken = (req, res, next) => {
   const bearerHeader = req.headers.authorization;
 

@@ -8,7 +8,7 @@ const { getMembersService } = require('../services/members');
 
 module.exports = {
 
-  getMembers: catchAsync(async (req, res) => {
+  getMembers: catchAsync(async (req, res, next) => {
     try {
       const { query } = req;
       const members = await getMembersService(query);
@@ -74,7 +74,7 @@ module.exports = {
       });
     } catch (err) {
       const error = new ErrorObject(err.message, err.statusCode || 400, err.errors || err.stack);
-      res.json(error);
+      return res.json(error);
     }
   }),
 };
