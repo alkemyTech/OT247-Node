@@ -2,37 +2,38 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Categories', {
       id: {
-        allowNull: false,
+        type: Sequelize.BIGINT,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
       },
       description: {
+        type: Sequelize.TEXT,
         allowNull: true,
-        type: Sequelize.STRING,
       },
       image: {
-        allowNull: true,
         type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       deletedAt: {
         type: Sequelize.DATE,
+        allowNull: true,
       },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('Categories');
   },
 };
