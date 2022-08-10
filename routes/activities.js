@@ -10,7 +10,7 @@ const { updateActivity, insertActivity } = require('../controllers/activities');
 
 router.put('/:id', isAdmin, schemaValidator(activity), updateActivity);
 
-router.post('/', isAdmin, function(req, res, next){
+router.post('/', isAdmin, (req, res, next) => {
   insertActivity(req, res, next);
 });
 

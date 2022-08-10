@@ -47,9 +47,9 @@ module.exports = {
       },
       custom: {
         options: (value) => Category.findOne({ where: { id: value } }).then((category) => {
-            if (!category) return Promise.reject();
-            return Promise.resolve();
-          }),
+          if (!category) return Promise.reject();
+          return Promise.resolve();
+        }),
         errorMessage: 'CategoryId not match with a category',
       },
     },

@@ -10,6 +10,7 @@ fs
     file.split('.')[1] === 'js')
     && (file !== basename))
   .forEach((file) => {
+    // eslint-disable-next-line
     const pathSwagger = require(path.join(__dirname, file));
     const pathKeys = Object.keys(pathSwagger.path);
     const pathValues = Object.values(pathSwagger.path);

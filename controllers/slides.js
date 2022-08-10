@@ -39,7 +39,7 @@ module.exports = {
         err.statusCode || 400,
         err.errors || err.stack,
       );
-      res.json(error);
+      return res.json(error);
     }
   },
 

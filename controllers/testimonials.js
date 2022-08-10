@@ -1,7 +1,12 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const { getTestimonialsService, createTestimonialsService, updateTestimonialService, deleteTestimonialService } = require('../services/testimonial');
+const {
+  getTestimonialsService,
+  createTestimonialsService,
+  updateTestimonialService,
+  deleteTestimonialService,
+} = require('../services/testimonial');
 
 module.exports = {
   getTestimonials: catchAsync(async (req, res, next) => {

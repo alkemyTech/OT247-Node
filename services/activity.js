@@ -3,12 +3,12 @@ const { ErrorObject } = require('../helpers/error');
 const existActivity = require('../helpers/existActivity');
 
 const insertActivity = async (body) => {
-    try{   	
-      const activities = await Activities.create(body)
-      return activities
-    }catch(err){
-        return { error: err };
-    };
+  try {
+    const activities = await Activities.create(body);
+    return activities;
+  } catch (err) {
+    return { error: err };
+  }
 };
 
 const updateActivityById = async (id, body) => {

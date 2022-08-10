@@ -12,6 +12,7 @@ const importAllJS = (index, directory) => {
     && (file !== index))
     .forEach((file) => {
       const fileName = file.split('.')[0];
+      // eslint-disable-next-line
       const impFile = require(path.join(directory, file));
       imports[fileName] = impFile;
     });
