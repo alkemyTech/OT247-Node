@@ -8,6 +8,7 @@ const {
   getNewsByIdService,
   deleteNewsService,
   getNewsService,
+  getComments,
 } = require('../services/news');
 
 module.exports = {
@@ -105,6 +106,24 @@ module.exports = {
       const httpError = createHttpError(
         error.statusCode,
         `[Error listing news] - [news - GET]: ${error.message}`,
+      );
+      return next(httpError);
+    }
+  }),
+  getCommentsFromNews: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const commentsFromANews = await getComments(id);
+      if (commentsFromANews == '') return res.status(404).send(`Comments from News with id ${id} not found`);
+      return endpointResponse({
+        res,
+        message: 'Comments of a news found',
+        body: commentsFromANews,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error listing comments from a news] - [news - GET]: ${error.message}`,
       );
       return next(httpError);
     }

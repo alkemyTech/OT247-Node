@@ -2,6 +2,7 @@ const { News } = require('../models');
 const { existNews } = require('../helpers/existNews');
 const { ErrorObject } = require('../helpers/error');
 const { paginate } = require('../helpers/paginate');
+const { Comment } = require('../models');
 
 const deleteNewsService = async (id) => {
   try {
@@ -60,10 +61,19 @@ const getNewsService = async (page) => {
   }
 };
 
+const getComments = async (id) => {
+  try {
+    return await Comment.findAll({ where: { newsId: id } });
+  } catch (error) {
+    throw new ErrorObject(404, `Comments from News with id ${id} not found`);
+  }
+}
+
 module.exports = {
   createNews,
   deleteNewsService,
   updateNewsService,
   getNewsByIdService,
   getNewsService,
+  getComments,
 };
