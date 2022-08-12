@@ -1,8 +1,6 @@
 const createHttpError = require('http-errors');
-
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const { updateCategoryById } = require('../services/category');
 
 const categoryService = require('../services/category');
 
@@ -17,34 +15,35 @@ module.exports = {
         message: 'Categories loaded successfully',
         body: categories,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error getting category] - [Category - GET]: ${error.message}`,
+        err.statusCode,
+        `[Error loading category] - [Category - GET]: ${err.message}`,
       );
       next(httpError);
     }
   }),
-  updateCategoryById: catchAsync(async (req, res, next) => {
+
+  getCategoryAsAdmin: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const integerId = parseInt(id, 10);
-      const { body } = req;
 
-      const category = await updateCategoryById(integerId, body);
+      const gottenCategory = await categoryService.getCategoryAsAdmin(id);
+
       endpointResponse({
         res,
-        message: 'Category updated successfully',
-        body: category,
+        message: 'Categories loaded successfully',
+        body: gottenCategory,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error updating category] - [Category - POST]: ${error.message}`,
+        err.statusCode,
+        `[Error loading category] - [Category - GET]: ${err.message}`,
       );
       next(httpError);
     }
-  }),
+  },
+
   createCategory: async (req, res, next) => {
     try {
       const { name, description, image } = req.body;
@@ -58,10 +57,36 @@ module.exports = {
         body: createdCategory,
       });
     } catch (err) {
-      next(err);
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error creating category] - [Category - POST]: ${err.message}`,
+      );
+      next(httpError);
     }
   },
-  deleteCategoryById: async (req, res) => {
+
+  updateCategoryById: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const integerId = parseInt(id, 10);
+      const { body } = req;
+
+      const category = await categoryService.updateCategoryById(integerId, body);
+      endpointResponse({
+        res,
+        message: 'Category updated successfully',
+        body: category,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error updating category] - [Category - PUT]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
+  deleteCategoryById: async (req, res, next) => {
     try {
       const { id } = req.params;
       await categoryService.deleteCategoryById(id);
@@ -71,19 +96,11 @@ module.exports = {
         message: 'Category deleted successfully',
       });
     } catch (err) {
-      res.status(500).json({ msg: err });
-    }
-  },
-  getCategoryAsAdmin: async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      const gottenCategory = await categoryService.getCategoryAsAdmin(id);
-      if (!gottenCategory) res.status(404).json({ status: 404, message: 'Category not found' });
-
-      res.status(200).json({ status: 200, message: 'Category found', data: gottenCategory });
-    } catch (err) {
-      res.status(400).json({ status: 400, error: 'An error has occurred' });
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error deleting category] - [Category - DELETE]: ${err.message}`,
+      );
+      next(httpError);
     }
   },
 };

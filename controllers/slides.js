@@ -1,29 +1,67 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const { getSlidesService } = require('../services/slides');
+
 const slidesService = require('../services/slides');
-const { ErrorObject } = require('../helpers/error');
 
 module.exports = {
   getSlides: catchAsync(async (req, res, next) => {
     try {
-      const slides = await getSlidesService();
+      const slides = await slidesService.getSlidesService();
       endpointResponse({
         res,
         message: 'Slides listed successfully',
         body: slides,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error listing slides] - [slides - GET]: ${error.message}`,
+        err.statusCode,
+        `[Error loading slides] - [slides - GET]: ${err.message}`,
       );
       next(httpError);
     }
   }),
 
-  deleteSlideById: async (req, res) => {
+  getSlideById: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const slide = await slidesService.getSlideById(id);
+
+      endpointResponse({
+        res,
+        message: 'Slides found successfully',
+        body: slide,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error finding slide] - [Slide - GET]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
+  updateSlideById: catchAsync(async (req, res, next) => {
+    try {
+      const { params, body } = req;
+
+      const slide = await slidesService.updateSlideById(params, body);
+
+      return endpointResponse({
+        res,
+        message: 'Slide updated successfully',
+        body: slide,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error updating slide] - [Slide - PUT]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
+  deleteSlideById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
 
@@ -34,47 +72,11 @@ module.exports = {
         message: 'Slide deleted successfully',
       });
     } catch (err) {
-      const error = new ErrorObject(
-        err.message,
-        err.statusCode || 400,
-        err.errors || err.stack,
-      );
-      return res.json(error);
-    }
-  },
-
-  getSlideById: async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const slide = await slidesService.getSlideById(id);
-
-      endpointResponse({
-        res,
-        message: 'Slides found successfully',
-        body: slide,
-      });
-    } catch (error) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error finding slide] - [Slide - GET]: ${error.message}`,
+        err.statusCode,
+        `[Error deleting slides] - [slides - DELETE]: ${err.message}`,
       );
       next(httpError);
     }
-  },
-
-  updateSlideById: async (req, res) => {
-    try {
-      const { params, body } = req;
-
-      await slidesService.updateSlideById(params, body);
-
-      return endpointResponse({
-        res,
-        message: 'Slide updated successfully',
-      });
-    } catch (err) {
-      const error = new ErrorObject(err.message, err.statusCode || 400, err.errors || err.stack);
-      return res.json(error);
-    }
-  },
+  }),
 };

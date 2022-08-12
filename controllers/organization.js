@@ -2,42 +2,43 @@ const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 
-const { getPublicOrgService, updateOrganization } = require('../services/organization');
+const organizationsService = require('../services/organization');
 
 module.exports = {
   getPublicOrganization: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const organization = await getPublicOrgService(id);
+      const organization = await organizationsService.getPublicOrgService(id);
 
       endpointResponse({
         res,
-        message: 'Users created successfully',
+        message: 'Organization created successfully',
         body: organization,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error get organization] - [organization - GET]: ${error.message}`,
+        err.statusCode,
+        `[Error get organization] - [organization - GET]: ${err.message}`,
       );
       next(httpError);
     }
   }),
+
   updatePublicOrganization: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
       const { body } = req;
-      const organization = await updateOrganization(id, body);
+      const organization = await organizationsService.updateOrganization(id, body);
 
       endpointResponse({
         res,
-        message: 'Users created successfully',
+        message: 'Organization updating successfully',
         body: organization,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error update organization] - [organization - PATH]: ${error.message}`,
+        err.statusCode,
+        `[Error update organization] - [organization - PATH]: ${err.message}`,
       );
       next(httpError);
     }
