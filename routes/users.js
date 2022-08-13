@@ -1,17 +1,18 @@
 const express = require('express');
+const controller = require('../controllers/users');
+const schema = require('../schemas/updateUser');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
+const { userExists } = require('../middlewares/userExists');
 
 const router = express.Router();
-const { getUsers, updateUser, deleteUserById } = require('../controllers/users');
-const { userExists } = require('../middlewares/userExists');
-const { verify } = require('../middlewares/verifyToken');
-const { schemaValidator } = require('../middlewares/validator');
-const { user } = require('../schemas/updateUser');
-const { isAdmin } = require('../middlewares/isAdmin');
 
-router.get('/', verify, isAdmin, getUsers);
+router
+  .patch('/:id', userExists, schemaValidator(schema.user), controller.updateUser)
+  .delete('/:id', controller.deleteUserById);
 
-router.route('/:id')
-  .patch(userExists, schemaValidator(user), updateUser)
-  .delete(deleteUserById);
+router
+  .use(isAdmin)
+  .get('/', controller.getUsers);
 
 module.exports = router;

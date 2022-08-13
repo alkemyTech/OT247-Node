@@ -1,23 +1,22 @@
 const express = require('express');
+const controller = require('../controllers/organization');
+const schema = require('../schemas/organization');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
+const emptyBody = require('../middlewares/emptyBody');
 
 const router = express.Router();
 
-const { isAdmin } = require('../middlewares/isAdmin');
-const { getPublicOrganization, updatePublicOrganization } = require('../controllers/organization');
-const { schemaValidator } = require('../middlewares/validator');
-const { organizationUpdate } = require('../schemas/organization');
-const emptyBody = require('../middlewares/emptyBody');
+router
+  .get('/public/:id', controller.getPublicOrganization);
 
-// GET public organization
-router.get('/public/:id', getPublicOrganization);
-
-// PATCH update public data of an organization
-router.patch(
-  '/public/:id',
-  isAdmin,
-  schemaValidator(organizationUpdate),
-  emptyBody.organization,
-  updatePublicOrganization,
-);
+router
+  .use(isAdmin)
+  .patch(
+    '/public/:id',
+    schemaValidator(schema.organizationUpdate),
+    emptyBody.organization,
+    controller.updatePublicOrganization,
+  );
 
 module.exports = router;
