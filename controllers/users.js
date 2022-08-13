@@ -1,23 +1,73 @@
 const bcrypt = require('bcrypt');
-const createHttpError = require('http-errors');
 const jwt = require('jsonwebtoken');
+const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { generateJWT } = require('../helpers/generateJWT');
-
 const welcomeMail = require('../mail-templates/mail-templates');
-
-const {
-  registerUser,
-  deleteUserService,
-  updateUserService,
-  userLoginService,
-  getUsersService,
-} = require('../services/user');
-
 const sendMail = require('../services/sendgrid');
 
+const usersService = require('../services/user');
+
 module.exports = {
+  getUsers: catchAsync(async (req, res, next) => {
+    try {
+      const users = await usersService.getUsersService();
+      endpointResponse({
+        res,
+        message: 'Users loaded successfully',
+        body: users,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error loading users] - [users - GET]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
+  userLogin: catchAsync(async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+      const userLoged = await usersService.userLoginService(email, password);
+
+      const token = generateJWT(
+        userLoged.id,
+        userLoged.firstName,
+        userLoged.lastName,
+        userLoged.roleId,
+      );
+
+      endpointResponse({
+        res,
+        message: 'User login success',
+        body: userLoged,
+        token,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error user login] - [users - POST]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
+  verifyTokenUser: (req, res) => {
+    jwt.verify(req.token, 'secretkey', (error, userInfo) => {
+      if (error) {
+        res.sendStatus(403);
+      } else {
+        endpointResponse({
+          res,
+          message: 'Token verified',
+          body: userInfo,
+        });
+      }
+    });
+  },
+
   userRegister: catchAsync(async (req, res, next) => {
     try {
       const { body } = req;
@@ -28,7 +78,7 @@ module.exports = {
       body.roleId = 1;
 
       // Create an user
-      const users = await registerUser(body);
+      const users = await usersService.registerUser(body);
 
       // Generate JWT to login a user
       const {
@@ -52,15 +102,37 @@ module.exports = {
         body: users,
         token,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error creating user] - [users - POST]: ${error.message}`,
+        err.statusCode,
+        `[Error creating user] - [users - POST]: ${err.message}`,
       );
       next(httpError);
     }
   }),
-  deleteUserById: async (req, res) => {
+
+  updateUser: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const { firstName, lastName, photo } = req.body;
+      const users = await usersService.updateUserService(id, { firstName, lastName, photo });
+
+      endpointResponse({
+        res,
+        message: 'User updated successfully',
+        body: users,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error updating user] - [users - PUT]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+
+  deleteUserById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
       const integerId = Number.isInteger(parseInt(id, 10));
@@ -72,74 +144,18 @@ module.exports = {
       }
 
       // User to eliminate
-      const deletedUser = await deleteUserService(id);
-      if (deletedUser === 1) {
-        res.status(200).send('user deleted');
-        return;
-      }
-
-      res.status(404).send('user not found');
-    } catch (err) {
-      res.status(400).send('an error has occurred');
-    }
-  },
-  updateUser: async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      const { firstName, lastName, photo } = req.body;
-      await updateUserService(id, { firstName, lastName, photo });
-
-      endpointResponse({ res, message: 'User updated successfully' });
-    } catch (err) {
-      res.status(500).json({ msg: err.message });
-    }
-  },
-  getUsers: async (req, res) => {
-    try {
-      const users = await getUsersService();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(400).send('an error has occurred');
-    }
-  },
-  userLogin: catchAsync(async (req, res, next) => {
-    try {
-      const { email, password } = req.body;
-      const userLoged = await userLoginService(email, password);
-
-      const token = generateJWT(
-        userLoged.id,
-        userLoged.firstName,
-        userLoged.lastName,
-        userLoged.roleId,
-      );
-
+      const user = await usersService.deleteUserService(id);
       endpointResponse({
         res,
-        message: 'User login success',
-        body: userLoged,
-        token,
+        message: 'User deleting successfully',
+        body: user,
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error user login] - [users - POST]: ${error.message}`,
+        err.statusCode,
+        `[Error deleting user] - [users - DELETE]: ${err.message}`,
       );
       next(httpError);
     }
   }),
-  verifyTokenUser: (req, res) => {
-    jwt.verify(req.token, 'secretkey', (error, userInfo) => {
-      if (error) {
-        res.sendStatus(403);
-      } else {
-        endpointResponse({
-          res,
-          message: 'Token verified',
-          body: userInfo,
-        });
-      }
-    });
-  },
 };
