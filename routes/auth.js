@@ -1,15 +1,14 @@
 const express = require('express');
+const controller = require('../controllers/users');
+const schema = require('../schemas/user');
+const { schemaValidator } = require('../middlewares/validator');
+const getToken = require('../helpers/getToken');
 
 const router = express.Router();
 
-const getToken = require('../helpers/getToken');
-const { userRegister, verifyTokenUser, userLogin } = require('../controllers/users');
-const { schemaValidator } = require('../middlewares/validator');
-const { user } = require('../schemas/user');
-
-router.post('/register', schemaValidator(user), userRegister);
-
-router.get('/me', getToken, verifyTokenUser);
-router.post('/login', userLogin);
+router
+  .get('/me', getToken, controller.verifyTokenUser)
+  .post('/login', controller.userLogin)
+  .post('/register', schemaValidator(schema.user), controller.userRegister);
 
 module.exports = router;
