@@ -1,5 +1,4 @@
 const createHttpError = require('http-errors');
-const { Category } = require('../models');
 
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
@@ -8,16 +7,24 @@ const { updateCategoryById } = require('../services/category');
 const categoryService = require('../services/category');
 
 module.exports = {
-  getCategoriesNames: async (req, res) => {
+  getCategoriesNames: catchAsync(async (req, res, next) => {
     try {
-      const categoriesNames = await Category.findAll({
-        attributes: ['name'],
+      const page = req.query;
+      const categories = await categoryService.getCategoriesNames(page);
+
+      endpointResponse({
+        res,
+        message: 'Categories loaded successfully',
+        body: categories,
       });
-      return res.status(200).json(categoriesNames);
-    } catch (err) {
-      return res.status(400).send(err);
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error getting category] - [Category - GET]: ${error.message}`,
+      );
+      next(httpError);
     }
-  },
+  }),
   updateCategoryById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -71,13 +78,10 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      //Try to get a category
       const gottenCategory = await categoryService.getCategoryAsAdmin(id);
+      if (!gottenCategory) res.status(404).json({ status: 404, message: 'Category not found' });
 
-      //Server responses
-      !gottenCategory
-        ? res.status(404).json({ status: 404, message: 'Category not found' })
-        : res.status(200).json({ status: 200, message: 'Category found', data: gottenCategory });
+      res.status(200).json({ status: 200, message: 'Category found', data: gottenCategory });
     } catch (err) {
       res.status(400).json({ status: 400, error: 'An error has occurred' });
     }

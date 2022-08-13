@@ -26,10 +26,6 @@ module.exports = {
           key: 'id',
         },
       },
-      deletedAt: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -44,7 +40,7 @@ module.exports = {
       },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('Slides');
   },
 };

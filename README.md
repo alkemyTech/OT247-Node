@@ -17,8 +17,14 @@ npx sequelize-cli db:migrate
 ```
 
 4) Seeders:
+
+To create seeders:
 ``` bash
-npx sequelize-cli db:seed:all
+sequelize db:seed:all
+```
+To erase seeders:
+``` bash   
+sequelize db:seed:undo:all
 ```
 
 ## Start local server
