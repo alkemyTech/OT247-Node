@@ -8,8 +8,10 @@ const router = express.Router();
 
 router
   .use(isAdmin)
+  .get('/', controller.getTestimonials)
   .post('/', schemaValidator(schema.testimonial), controller.createTestimonial)
 
-  .put('/:id', schemaValidator(schema.testimonial), controller.updateTestimonial);
+  .put('/:id', schemaValidator(schema.testimonial), controller.updateTestimonial)
+  .delete('/:id', controller.deleteTestimonial);
 
 module.exports = router;

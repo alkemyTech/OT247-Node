@@ -14,6 +14,7 @@ router
   .use(isAdmin)
   .get('/', controller.getMembers)
 
+  .put('/:id', memberExists, schemaValidator(schema.updateMember), controller.updateMember)
   .delete('/:id', memberExists, controller.deleteMemberById);
 
 module.exports = router;
