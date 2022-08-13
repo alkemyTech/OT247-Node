@@ -1,4 +1,4 @@
-const paginate = async (query, path, model) => {
+const paginate = async (query, path, model, attributes = {}) => {
   const { page = 1 } = query;
   const url = `http://localhost:3000/${path}?`;
   const limit = 10;
@@ -7,6 +7,7 @@ const paginate = async (query, path, model) => {
   const { count, rows } = await model.findAndCountAll({
     limit,
     offset,
+    attributes,
   });
 
   const previusPage = (page - 1) === 0
@@ -25,4 +26,4 @@ const paginate = async (query, path, model) => {
   return pagination;
 };
 
-module.exports = paginate;
+module.exports = { paginate };

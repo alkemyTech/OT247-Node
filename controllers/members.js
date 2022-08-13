@@ -1,16 +1,18 @@
+const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { ErrorObject } = require('../helpers/error');
 const { catchAsync } = require('../helpers/catchAsync');
 const { deleteMemberByIdService } = require('../services/member');
-const createHttpError = require('http-errors');
 const memberService = require('../services/member');
 const { getMembersService } = require('../services/members');
 
 module.exports = {
 
-  getMembers: catchAsync(async (req, res) => {
+  getMembers: catchAsync(async (req, res, next) => {
     try {
-      const members = await getMembersService();
+      const { query } = req;
+      const members = await getMembersService(query);
+
       endpointResponse({
         res,
         message: 'Members loaded successfully',
@@ -22,7 +24,7 @@ module.exports = {
         `[Error loading members] - [members - GET]: ${error.message}`,
       );
       next(httpError);
-    };
+    }
   }),
 
   createMember: async (req, res) => {
@@ -43,6 +45,23 @@ module.exports = {
     }
   },
 
+  updateMember: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { body } = req;
+
+      await memberService.updateMember(id, body);
+
+      return endpointResponse({
+        res,
+        message: 'Member updated successfully',
+      });
+    } catch (err) {
+      const error = new ErrorObject(err.message, err.statusCode || 400, err.errors || err.stack);
+      return next(error);
+    }
+  }),
+
   deleteMemberById: catchAsync(async (req, res) => {
     try {
       const { id } = req.params;
@@ -55,7 +74,7 @@ module.exports = {
       });
     } catch (err) {
       const error = new ErrorObject(err.message, err.statusCode || 400, err.errors || err.stack);
-      res.json(error);
+      return res.json(error);
     }
   }),
 };

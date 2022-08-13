@@ -8,8 +8,7 @@ const { schemaValidator } = require('../middlewares/validator');
 const { user } = require('../schemas/updateUser');
 const { isAdmin } = require('../middlewares/isAdmin');
 
-/* GET users listing. */
-router.get('/', isAdmin, getUsers);
+router.get('/', verify, isAdmin, getUsers);
 
 router.route('/:id')
   .patch(userExists, schemaValidator(user), updateUser)

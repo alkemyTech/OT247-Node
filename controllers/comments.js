@@ -1,23 +1,38 @@
 const createHttpError = require('http-errors');
-
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-
-const { getCommentsServices } = require('../services/comment');
+const commentService = require('../services/comments');
 
 module.exports = {
-  getCommentsControllers: catchAsync(async (req, res, next) => {
+  deleteCommentById: catchAsync(async (req, res, next) => {
     try {
-      const allComments = await getCommentsServices();
+      const { id } = req.params;
+
+      await commentService.deleteCommentById(id);
       endpointResponse({
         res,
-        message: 'All comments',
-        body: allComments,
+        message: 'Comment deleted successfully',
       });
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-        `[Error get comment] - [comment - GET]: ${error.message}`,
+        `[Error error deleting comment] - [comment - Delete]: ${error.message}`,
+      );
+      next(httpError);
+    }
+  }),
+  getCommentsControllers: catchAsync(async (req, res, next) => {
+    try {
+      const comments = await commentService.getCommentsServices();
+      endpointResponse({
+        res,
+        mesage: 'Comments found successfully',
+        body: comments,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error error getting comments] - [comment - GET]: ${error.message}`,
       );
       next(httpError);
     }
