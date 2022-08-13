@@ -5,31 +5,44 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Slide extends Model {
     static associate(models) {
-      Slide.belongsTo(models.Organization, {
-        foreignKey: 'id',
-        target_key: 'organizationId',
-      });
+      Slide.belongsTo(models.Organization, { foreignKey: 'organizationId' });
     }
   }
-  Slide.init({
-    imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  Slide.init(
+    {
+      id: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
+      imageUrl: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      text: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      order: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      organizationId: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
-    text: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+    {
+      sequelize,
+      paranoid: true,
+      timestamp: true,
+      modelName: 'Slide',
     },
-    order: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    organizationId: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    paranoid: true,
-    timestamp: true,
-    modelName: 'Slide',
-  });
+  );
   return Slide;
 };

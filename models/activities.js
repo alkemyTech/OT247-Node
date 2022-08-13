@@ -8,14 +8,27 @@ module.exports = (sequelize, DataTypes) => {
   Activities.init(
     {
       id: {
-        allowNull: false,
+        type: DataTypes.BIGINT,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
+        allowNull: false,
       },
-      name: { type: DataTypes.STRING, allowNull: false },
-      content: { type: DataTypes.TEXT, allowNull: false },
-      image: { type: DataTypes.STRING, allowNull: false },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
