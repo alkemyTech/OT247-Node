@@ -89,7 +89,6 @@ module.exports = {
   deleteNews: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-
       const news = await newsService.deleteNewsService(parseInt(id, 10));
       endpointResponse({
         res,
@@ -104,4 +103,5 @@ module.exports = {
       next(httpError);
     }
   }),
+
 };

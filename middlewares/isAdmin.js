@@ -4,7 +4,7 @@ const isAdmin = async (req, res, next) => {
   try {
     const { roleId } = req.user;
 
-    if (roleId !== 2) return res.status(401).send('[Unauthorized - User] - [Access - Denied]');
+    if (roleId !== 1) return res.status(401).send('[Unauthorized - User] - [Access - Denied]');
     return next();
   } catch (error) {
     const httpError = createHttpError(
