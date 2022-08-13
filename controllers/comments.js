@@ -1,6 +1,7 @@
 const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
+
 const commentService = require('../services/comments');
 
 module.exports = {
@@ -32,10 +33,10 @@ module.exports = {
         res,
         message: 'Comment deleted successfully',
       });
-    } catch (error) {
+    } catch (err) {
       const httpError = createHttpError(
-        error.statusCode,
-        `[Error error deleting comment] - [comment - Delete]: ${error.message}`,
+        err.statusCode,
+        `[Error deleting comment] - [comment - DELETE]: ${err.message}`,
       );
       next(httpError);
     }

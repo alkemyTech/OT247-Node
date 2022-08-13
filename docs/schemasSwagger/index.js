@@ -10,6 +10,7 @@ fs
     file.split('.')[1] === 'js')
     && (file !== basename))
   .forEach((file) => {
+    // eslint-disable-next-line
     const schema = require(path.join(__dirname, file));
     schemas[schema.schemaName] = schema;
   });
