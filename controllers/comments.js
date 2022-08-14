@@ -41,4 +41,21 @@ module.exports = {
       next(httpError);
     }
   }),
+  getCommentsControllers: catchAsync(async (req, res, next) => {
+    try {
+      const comments = await commentService.getCommentsServices();
+      endpointResponse({
+        res,
+        mesage: 'Comments found successfully',
+        body: comments,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error error getting comments] - [comment - GET]: ${error.message}`,
+      );
+      next(httpError);
+    }
+  }),
 };
+
