@@ -1,33 +1,5 @@
 const Auth = {
   path: {
-    '/auth/login': {
-      post: {
-        tags: ['auth'],
-        summary: 'Login',
-        description: 'This endpoint is login for users',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/UserLogin',
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: 'user description and token',
-          },
-          400: {
-            description: 'error user login',
-          },
-          500: {
-            description: 'data and hash arguments required',
-          },
-        },
-      },
-    },
     '/auth/register': {
       post: {
         tags: ['auth'],
@@ -56,6 +28,34 @@ const Auth = {
           },
           400: {
             description: 'Bad Request',
+          },
+        },
+      },
+    },
+    '/auth/login': {
+      post: {
+        tags: ['auth'],
+        summary: 'Login',
+        description: 'This endpoint is login for users',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UserLogin',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'user description and token',
+          },
+          400: {
+            description: 'error user login',
+          },
+          500: {
+            description: 'data and hash arguments required',
           },
         },
       },

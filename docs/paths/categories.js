@@ -1,5 +1,5 @@
 const Category = {
-  paths: {
+  path: {
     '/categories': {
       get: {
         tags: ['category'],
