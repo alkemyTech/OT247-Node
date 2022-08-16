@@ -75,7 +75,7 @@ module.exports = {
       // Encrypt password
       const encryptedPassword = bcrypt.hashSync(body.password, 10);
       body.password = encryptedPassword;
-      body.roleId = 1;
+      body.roleId = 2;
 
       // Create an user
       const users = await usersService.registerUser(body);
