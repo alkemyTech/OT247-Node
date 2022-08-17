@@ -1,19 +1,18 @@
 const express = require('express');
-
-const router = express.Router();
-const { getSlides } = require('../controllers/slides');
+const controller = require('../controllers/slides');
+const schema = require('../schemas/slide');
 const { isAdmin } = require('../middlewares/isAdmin');
-const { deleteSlideById } = require('../controllers/slides');
-const { getSlideById, updateSlideById } = require('../controllers/slides');
-const { verify } = require('../middlewares/verifyToken');
 const { slideExists } = require('../middlewares/slideExists');
-const slideSchema = require('../schemas/slide');
 const { schemaValidator } = require('../middlewares/validator');
 
-router.get('/', isAdmin, getSlides);
-router.delete('/:id', verify, isAdmin, slideExists, deleteSlideById);
-router.get('/:id', verify, isAdmin, slideExists, getSlideById);
+const router = express.Router();
 
-router.put('/:id', verify, isAdmin, schemaValidator(slideSchema), updateSlideById);
+router
+  .use(isAdmin)
+  .get('/', controller.getSlides)
+
+  .get('/:id', slideExists, controller.getSlideById)
+  .put('/:id', schemaValidator(schema), controller.updateSlideById)
+  .delete('/:id', slideExists, controller.deleteSlideById);
 
 module.exports = router;

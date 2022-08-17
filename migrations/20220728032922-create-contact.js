@@ -1,42 +1,43 @@
-'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Contacts', {
       id: {
-        allowNull: false,
+        type: Sequelize.BIGINT,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
       },
       phone: {
         type: Sequelize.INTEGER,
+        allowNull: true,
       },
       email: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
       },
       message: {
-        allowNull: false,
         type: Sequelize.TEXT,
+        allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       deletedAt: {
         type: Sequelize.DATE,
+        allowNull: true,
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Contacts');
   },
 };

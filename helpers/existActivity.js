@@ -6,7 +6,7 @@ const existActivity = async (idActivity) => {
     const activity = await Activities.findByPk(idActivity);
     return activity;
   } catch (err) {
-    throw new ErrorObject(404, 'Category not found');
+    throw new ErrorObject(404, 'Activity not found');
   }
 };
 

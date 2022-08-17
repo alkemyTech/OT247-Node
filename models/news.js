@@ -1,4 +1,3 @@
-'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -9,20 +8,49 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      News.belongsTo(models.Category, { foreignKey: 'categoryId' });
+      News.hasMany(models.Comment, { foreignKey: 'newsId' });
     }
   }
-  News.init({
-    name: DataTypes.STRING,
-    content: DataTypes.STRING,
-    image: DataTypes.STRING,
-    categoryId: DataTypes.INTEGER,
-    type: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'News',
-    timestamps: true,
-    paranoid: true,
-  });
-
+  News.init(
+    {
+      id: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      categoryId: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'News',
+      timestamps: true,
+      paranoid: true,
+    },
+  );
   return News;
 };

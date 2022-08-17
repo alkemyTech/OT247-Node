@@ -1,87 +1,132 @@
-const {
-    createNews,
-    getNewsByIdService,
-    deleteNewsService,
-} = require("../services/news");
-const createHttpError = require("http-errors");
-const { endpointResponse } = require("../helpers/success");
-const { catchAsync } = require("../helpers/catchAsync");
+const createHttpError = require('http-errors');
+const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
 
-const { updateNewsService } = require("../services/news.js");
+const {
+  updateNewsService,
+  createNews,
+  getNewsByIdService,
+  deleteNewsService,
+  getNewsService,
+  getComments,
+} = require('../services/news');
 
 module.exports = {
-    updateNews: catchAsync(async (req, res, next) => {
-        try {
-            const { id } = req.params;
-            const integerId = Number.isInteger(parseInt(id));
-            if (integerId) {
-                const updateNews = await updateNewsService(id, req.body);
-                endpointResponse({
-                    res,
-                    message: "News updated successfully",
-                });
-            } else {
-                res.status(412).send("id param has to be a integer");
-            }
-        } catch (error) {
-            const httpError = createHttpError(
-                error.statusCode,
-                `[Error updating news] - [news - PUT]: ${error.message}`
-            );
-            next(httpError);
-        }
-    }),
+  getNews: catchAsync(async (req, res, next) => {
+    try {
+      const page = req.query;
+      const news = await getNewsService(page);
 
-    deleteNews: catchAsync(async (req, res, next) => {
-        try {
-            const { id } = req.params;
+      return endpointResponse({
+        res,
+        message: 'News loaded successfully',
+        body: news,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error listing news] - [news - GET]: ${err.message}`,
+      );
+      return next(httpError);
+    }
+  }),
 
-            const deletedNews = await deleteNewsService(parseInt(id, 10));
-            endpointResponse({
-                res,
-                message: "News deleted successfully",
-                body: deletedNews,
-            });
-        } catch (error) {
-            const httpError = createHttpError(error.statusCode, error.message);
-            next(httpError);
-        }
-    }),
+  getNewsById: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const news = await getNewsByIdService(id);
 
-    createNews: async (req, res) => {
-        try {
-            const { body } = req;
+      endpointResponse({
+        res,
+        message: 'News loaded successfully',
+        body: news,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error loading news] - [news - GET]: ${err.message}`,
+      );
+      return next(httpError);
+    }
+  }),
 
-            //Try to create a news
-            const news = await createNews(body);
+  createNews: catchAsync(async (req, res, next) => {
+    try {
+      const { body } = req;
 
-            //Server responses
-            return endpointResponse({
-                res,
-                message: "News created",
-                body: news,
-            });
-        } catch (err) {
-            res.status(400).json({
-                status: 400,
-                message: "An error has occurred",
-                error: err.message,
-            });
-        }
-    },
-    getNewsById: async (req, res) => {
-        const { id } = req.params;
-        const news = await getNewsByIdService(id);
+      const news = await createNews(body);
 
-        // Error
-        if (news !== null && news.error) {
-            return res.status(400).send("an error has occurred");
-        }
+      endpointResponse({
+        res,
+        message: 'News created',
+        body: news,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error creating news] - [news - POST]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
 
-        // In case the news was not found
-        if (news === null) return res.status(404).send("news not found");
+  updateNews: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const integerId = Number.isInteger(parseInt(id, 10));
+      if (integerId) {
+        const news = await updateNewsService(id, req.body);
+        endpointResponse({
+          res,
+          message: 'News updated successfully',
+          body: news,
+        });
+      } else {
+        res.status(412).send('id param has to be a integer');
+      }
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error updating news] - [news - PUT]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
 
-        // Found news
-        return res.status(200).json(news);
-    },
+  deleteNews: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const news = await deleteNewsService(parseInt(id, 10));
+      endpointResponse({
+        res,
+        message: 'News deleted successfully',
+        body: news,
+      });
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `[Error deleting news] - [news - DELETE]: ${err.message}`,
+      );
+      next(httpError);
+    }
+  }),
+  
+  getCommentsFromNews: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const commentsFromANews = await getComments(id);
+      if (commentsFromANews == '') return res.status(404).send(`Comments from News with id ${id} not found`);
+      return endpointResponse({
+        res,
+        message: 'Comments of a news found',
+        body: commentsFromANews,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error listing comments from a news] - [news - GET]: ${error.message}`,
+      );
+      return next(httpError);
+    }
+  }),
 };

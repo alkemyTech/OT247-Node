@@ -1,11 +1,16 @@
-const express = require('express');
+const router = require('express').Router();
 
-const router = express.Router();
+const controller = require('../controllers/comments');
+const { isAdmin } = require('../middlewares/isAdmin');
 
-const { verify } = require('../middlewares/verifyToken');
-const { isAuthorized } = require('../middlewares/isAuthorizedComment');
-const commentCtrl = require('../controllers/comments');
+const { schemaValidator } = require('../middlewares/validator');
+const { comment } = require('../schemas/comment');
+const { existComment } = require('../helpers/existComment');
 
-router.delete('/:id', verify, isAuthorized, commentCtrl.deleteCommentById);
+router
+  .use(isAdmin)
+  .get('/', controller.getCommentsControllers)
+  .delete('/:id', controller.deleteCommentById)
+  .put('/:id', existComment, schemaValidator(comment), controller.updateCommentById);
 
 module.exports = router;

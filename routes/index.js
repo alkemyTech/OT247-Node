@@ -1,22 +1,12 @@
 const express = require('express');
-
-const router = express.Router();
-
 const swaggerUI = require('swagger-ui-express');
 const swaggerSetup = require('../docs/swagger');
-const categoriesRouter = require('./categories');
-const commentsRouter = require('./comments');
-const organizationsRouter = require('./organizations');
-const newsRouter = require('./news');
+const { importAllJS } = require('../helpers/importAll');
+const { verify } = require('../middlewares/verifyToken');
 const authRouter = require('./auth');
-const userRouter = require('./users');
-const activitiesRouter = require('./activities');
-const contactsRouter = require('./contacts');
-const slidesRouter = require('./slides');
-const testimonialsRouter = require('./testimonials');
-const membersRouter = require('./members');
-const backofficeRouter = require('./backoffice');
-const commentRouter = require('./comment');
+
+const router = express.Router();
+const routes = importAllJS(__filename, __dirname);
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -34,36 +24,25 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.use('/categories', categoriesRouter);
+// Unprotected Routes
+router
+  .use('/', routes.root)
+  .use('/auth', routes.auth)
+  .use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup));
 
-// Comments
-router.use('/comments', commentsRouter);
-
-// Organizations
-router.use('/organizations', organizationsRouter);
-
-// Users
-router.use('/users', userRouter);
-
-// Activities
-router.use('/activities', activitiesRouter);
-
-// News
-router.use('/news', newsRouter);
-
-// Contacts
-router.use('/contacts', contactsRouter);
-router.use('/slides', slidesRouter);
-
-// Testimonials
-router.use('/testimonials', testimonialsRouter);
-
-// Members
-router.use('/members', membersRouter);
-
-// BackOffice
-router.use('/backoffice', backofficeRouter);
-
-router.use('/comments', commentRouter);
+// Protected Routes
+router
+  .use(verify)
+  .use('/activities', routes.activities)
+  .use('/backoffice', routes.backoffice)
+  .use('/categories', routes.categories)
+  .use('/comments', routes.comments)
+  .use('/contacts', routes.contacts)
+  .use('/members', routes.members)
+  .use('/news', routes.news)
+  .use('/organizations', routes.organizations)
+  .use('/slides', routes.slides)
+  .use('/testimonials', routes.testimonials)
+  .use('/users', routes.users);
 
 module.exports = router;
