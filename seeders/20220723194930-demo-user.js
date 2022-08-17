@@ -5,6 +5,30 @@ const amount = 20;
 const date = new Date();
 let userType;
 
+const test = {
+  firstName: 'test',
+  lastName: 'test',
+  email: 'test@gmail.com',
+  password: 'T3st.123',
+  photo: faker.image.avatar(),
+  roleId: 2,
+  createdAt: date,
+  updatedAt: date,
+};
+
+const testAdmin = {
+  firstName: 'test',
+  lastName: 'test',
+  email: 'testAdmin@gmail.com',
+  password: 'T3st.123',
+  photo: faker.image.avatar(),
+  roleId: 1,
+  createdAt: date,
+  updatedAt: date,
+};
+
+data.push(test, testAdmin);
+
 for (let i = 0; i < amount; i += 1) {
   userType = i % 2 === 0 ? 1 : 2;
 

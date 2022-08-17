@@ -17,16 +17,6 @@ exports.user = {
     optional: true,
     isString: { errorMessage: 'Photo should be a string' },
   },
-  isAuthorized: {
-    custom: {
-      options: (value, { req }) => {
-        const { id } = req.params;
-        const { userId } = req.user;
-        return Number(id) === userId;
-      },
-    },
-    errorMessage: 'You are not authorized to perform this action',
-  },
   emptyFields: {
     custom: {
       options: (value, { req }) => {
