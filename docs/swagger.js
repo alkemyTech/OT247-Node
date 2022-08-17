@@ -19,6 +19,18 @@ const swaggerDefinition = {
       name: 'example',
       description: 'This is an example tag',
     },
+    {
+      name: 'auth',
+      description: 'This is an auth tag',
+    },
+    {
+      name: 'category',
+      description: 'This is an category tag',
+    },
+    {
+      name: 'member',
+      description: 'This is an member tag',
+    },
   ],
   paths: pathsSwagger,
   components: {
