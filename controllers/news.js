@@ -2,13 +2,20 @@ const createHttpError = require('http-errors');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 
-const newsService = require('../services/news');
+const {
+  updateNewsService,
+  createNews,
+  getNewsByIdService,
+  deleteNewsService,
+  getNewsService,
+  getComments,
+} = require('../services/news');
 
 module.exports = {
   getNews: catchAsync(async (req, res, next) => {
     try {
       const page = req.query;
-      const news = await newsService.getNewsService(page);
+      const news = await getNewsService(page);
 
       return endpointResponse({
         res,
@@ -27,7 +34,7 @@ module.exports = {
   getNewsById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const news = await newsService.getNewsByIdService(id);
+      const news = await getNewsByIdService(id);
 
       endpointResponse({
         res,
@@ -47,7 +54,7 @@ module.exports = {
     try {
       const { body } = req;
 
-      const news = await newsService.createNews(body);
+      const news = await createNews(body);
 
       endpointResponse({
         res,
@@ -68,7 +75,7 @@ module.exports = {
       const { id } = req.params;
       const integerId = Number.isInteger(parseInt(id, 10));
       if (integerId) {
-        const news = await newsService.updateNewsService(id, req.body);
+        const news = await updateNewsService(id, req.body);
         endpointResponse({
           res,
           message: 'News updated successfully',
@@ -89,7 +96,7 @@ module.exports = {
   deleteNews: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const news = await newsService.deleteNewsService(parseInt(id, 10));
+      const news = await deleteNewsService(parseInt(id, 10));
       endpointResponse({
         res,
         message: 'News deleted successfully',
@@ -103,5 +110,23 @@ module.exports = {
       next(httpError);
     }
   }),
-
+  
+  getCommentsFromNews: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const commentsFromANews = await getComments(id);
+      if (commentsFromANews == '') return res.status(404).send(`Comments from News with id ${id} not found`);
+      return endpointResponse({
+        res,
+        message: 'Comments of a news found',
+        body: commentsFromANews,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error listing comments from a news] - [news - GET]: ${error.message}`,
+      );
+      return next(httpError);
+    }
+  }),
 };
