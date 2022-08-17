@@ -1,17 +1,17 @@
 const express = require('express');
+const controller = require('../controllers/testimonials');
+const schema = require('../schemas/testimonial');
+const { isAdmin } = require('../middlewares/isAdmin');
+const { schemaValidator } = require('../middlewares/validator');
 
 const router = express.Router();
 
-const { isAdmin } = require('../middlewares/isAdmin');
-const { verify } = require('../middlewares/verifyToken');
-const { getTestimonials, createTestimonial, updateTestimonial, deleteTestimonial } = require('../controllers/testimonials');
-const { schemaValidator } = require('../middlewares/validator');
-const { testimonial } = require('../schemas/testimonial');
-
 router
-  .get('/', verify, isAdmin, getTestimonials)
-  .post('/', verify, isAdmin, schemaValidator(testimonial), createTestimonial)
-  .put('/:id', verify, isAdmin, schemaValidator(testimonial), updateTestimonial)
-  .delete('/:id', isAdmin, deleteTestimonial);
+  .use(isAdmin)
+  .get('/', controller.getTestimonials)
+  .post('/', schemaValidator(schema.testimonial), controller.createTestimonial)
+
+  .put('/:id', schemaValidator(schema.testimonial), controller.updateTestimonial)
+  .delete('/:id', controller.deleteTestimonial);
 
 module.exports = router;

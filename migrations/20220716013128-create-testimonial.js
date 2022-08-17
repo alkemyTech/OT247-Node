@@ -2,27 +2,30 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Testimonials', {
       id: {
-        allowNull: false,
+        type: Sequelize.BIGINT,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: true,
       },
       image: {
         type: Sequelize.STRING,
+        allowNull: true,
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       deletedAt: {
         type: Sequelize.DATE,
@@ -30,7 +33,7 @@ module.exports = {
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Testimonials');
   },
 };

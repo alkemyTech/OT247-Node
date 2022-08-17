@@ -1,11 +1,35 @@
 const { faker } = require('@faker-js/faker');
 
-let data = [];
-let amount = 20;
-let date = new Date();
+const data = [];
+const amount = 20;
+const date = new Date();
 let userType;
 
-for (let i = 0; i < amount; i++) {
+const test = {
+  firstName: 'test',
+  lastName: 'test',
+  email: 'test@gmail.com',
+  password: 'T3st.123',
+  photo: faker.image.avatar(),
+  roleId: 2,
+  createdAt: date,
+  updatedAt: date,
+};
+
+const testAdmin = {
+  firstName: 'test',
+  lastName: 'test',
+  email: 'testAdmin@gmail.com',
+  password: 'T3st.123',
+  photo: faker.image.avatar(),
+  roleId: 1,
+  createdAt: date,
+  updatedAt: date,
+};
+
+data.push(test, testAdmin);
+
+for (let i = 0; i < amount; i += 1) {
   userType = i % 2 === 0 ? 1 : 2;
 
   data.push({
@@ -21,11 +45,11 @@ for (let i = 0; i < amount; i++) {
 }
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('Users', data, {});
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('Users', null, {});
   },
 };

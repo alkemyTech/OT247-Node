@@ -26,6 +26,7 @@ const sendMail = async ({
     await sgMail.send(msg);
   } catch (err) {
     if (err.response) {
+      // eslint-disable-next-line
       console.log(err.response.body);
     }
   }
