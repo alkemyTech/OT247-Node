@@ -3,9 +3,26 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerSetup = require('../docs/swagger');
 const { importAllJS } = require('../helpers/importAll');
 const { verify } = require('../middlewares/verifyToken');
+const authRouter = require('./auth');
 
 const router = express.Router();
 const routes = importAllJS(__filename, __dirname);
+
+/* GET home page. */
+router.get('/', (req, res) => {
+  res.render('index', { title: 'Express' });
+});
+
+// Swagger Documentation
+router.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup));
+
+// Auth
+router.use('/auth', authRouter);
+
+// Categories
+router.get('/login', (req, res) => {
+  res.render('login');
+});
 
 // Unprotected Routes
 router
