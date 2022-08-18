@@ -6,7 +6,7 @@ const { Comment } = require('../models');
 
 const deleteNewsService = async (id) => {
   try {
-    const news = await existNews(id);
+    const news = await existNews;
     if (!news) throw new ErrorObject('News not found', 404);
     return await News.destroy({ where: { id } });
   } catch (error) {
@@ -67,7 +67,7 @@ const getComments = async (id) => {
   } catch (error) {
     throw new ErrorObject(404, `Comments from News with id ${id} not found`);
   }
-}
+};
 
 module.exports = {
   createNews,
