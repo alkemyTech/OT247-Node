@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const createHttpError = require('http-errors');
@@ -6,6 +7,8 @@ const { catchAsync } = require('../helpers/catchAsync');
 const { generateJWT } = require('../helpers/generateJWT');
 const welcomeMail = require('../mail-templates/mail-templates');
 const sendMail = require('../services/sendgrid');
+
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 const usersService = require('../services/user');
 
@@ -55,7 +58,7 @@ module.exports = {
   }),
 
   verifyTokenUser: (req, res) => {
-    jwt.verify(req.token, 'secretkey', (error, userInfo) => {
+    jwt.verify(req.token, accessTokenSecret, (error, userInfo) => {
       if (error) {
         res.sendStatus(403);
       } else {
