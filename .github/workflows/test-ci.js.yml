@@ -8,6 +8,13 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
+env:
+  ACCESS_TOKEN_SECRET: secretkey
+  DB_NAME: bcuqogtp2sj30tfkzzfg
+  DB_USER: ua9l9izkr4usagpx
+  DB_HOST: bcuqogtp2sj30tfkzzfg-mysql.services.clever-cloud.com
+  DB_PASSWORD: cIfqRRMvARJtUMvlW3O2
+  DB_PORT: 3306
 
 jobs:
   build:
