@@ -6,8 +6,8 @@ const { Activities } = require('../models');
 const { generateJWT } = require('../helpers/generateJWT');
 const app = require('../app');
 
-const tokenNotAdmin = generateJWT(1, 'example', 'test', 1);
-const tokenAdmin = generateJWT(2, 'example', 'test', 2);
+const tokenAdmin = generateJWT(1, 'example', 'test', 1);
+const tokenNotAdmin = generateJWT(2, 'example', 'test', 2);
 
 chai.use(chaiHttp);
 
@@ -16,7 +16,10 @@ describe('Activities tests', () => {
 
   after(() => {
     Activities.destroy({
-      truncate: true,
+      where:{
+        id,
+      },
+      force: true,
     });
   });
 
