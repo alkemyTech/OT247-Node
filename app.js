@@ -1,3 +1,4 @@
+const createHttpError = require('http-errors');
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -19,6 +20,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const apiTimeout = 200000;
+app.use((req, res, next) => {
+  req.setTimeout(apiTimeout, () => {
+    const httpError = createHttpError(
+      408,
+      `[${req.method} ${req.url}]: Request timeout`,
+    );
+    next(httpError);
+  });
+
+  res.setTimeout(apiTimeout, () => {
+    const httpError = createHttpError(
+      503,
+      `[${req.method} ${req.url}]: Service unavailable`,
+    );
+    next(httpError);
+  });
+  next();
+});
 
 app.use('/', indexRouter);
 
