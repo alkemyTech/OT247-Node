@@ -32,7 +32,7 @@ describe('Members', () => {
   });
 
   after(async () => {
-    // await Member.destroy({ where: { id }, force: true });
+    await Member.destroy({ where: { id }, force: true });
     await Member.destroy({ where: { id: id + 1 }, force: true });
   });
 
